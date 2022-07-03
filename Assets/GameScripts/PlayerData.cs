@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +48,7 @@ public class PlayerData
         UnitData unit = new UnitData(unit_id, prefab_name, spawnpos, spawnrota, hitpoints, _damage, rangedResistance,
             meleeResistance);
         UnitDictionary.Add(unit_id, unit);
-        ClientMessages.BroadCastUnitCreation(unit_id, prefab_name, Client.myCurrentServer,Client.clientID,Client.otherID, spawnpos, spawnrota, hitpoints, _damage, meleeResistance,
+        ClientMessages.BroadCastUnitCreation(unit_id, prefab_name, Client.myCurrentServer,Client.otherID, spawnpos, spawnrota, hitpoints, _damage, meleeResistance,
             rangedResistance);
     }
 

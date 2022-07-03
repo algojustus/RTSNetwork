@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitData
@@ -28,9 +26,22 @@ public class UnitData
         ranged_resistance = rangedResistance;
         melee_resistance = meleeResistance;
     }
-
-    public void SetIngameUnit(GameObject gameObject)
+    
+    public void SpawnIngameUnit()
     {
-        unit = gameObject;
+        unit = ObjectSpawner.SpawnObject(prefabname, position, rotation);
+    }
+    
+    public void SetIngameUnit(string prefab, Vector3 _position, Quaternion _rotation)
+    {
+        prefabname = prefab + "_prefab";
+        position = _position;
+        rotation = _rotation;
+        SpawnIngameUnit();
+    }
+
+    public GameObject ReturnIngameUnit()
+    {
+        return unit;
     }
 }

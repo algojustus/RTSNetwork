@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,15 +26,13 @@ public class LobbyManager : MonoBehaviour
     private List<GameObject> serverElementList;
     private bool isHostingLobby;
     public static LobbyManager instance;
-    private SynchronizationContext _synchronizationContext;
+
     private void Awake()
     {
-        _synchronizationContext = SynchronizationContext.Current;
         if (instance == null)
         {
             instance = this;
-        }
-        else if (instance != this)
+        } else if (instance != this)
         {
             Destroy(this);
         }
@@ -91,19 +88,16 @@ public class LobbyManager : MonoBehaviour
     public void TransferServer()
     {
         isHostingLobby = true;
-        _synchronizationContext.Post(_ =>
-        {
-            player1lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player1_name;
-            player2lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player2_name;
-            startButton.enabled = true;
-        }, null);
+        player1lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player1_name;
+        player2lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player2_name;
+        startButton.enabled = true;
     }
 
     public void RemoveServerOutOfServerList()
     {
         if (!isHostingLobby)
             return;
-        ClientMessages.RemoveGamelobby(Client.clientID);
+        ClientMessages.RemoveGamelobby();
         isHostingLobby = false;
     }
 
@@ -115,29 +109,26 @@ public class LobbyManager : MonoBehaviour
         if (server.player2_id != 0)
         {
             Client.myCurrentServer = Client.clientID;
-            ClientMessages.StartGamelobby(Client.clientID, server.player2_id);
+            ClientMessages.StartGamelobby(server.player2_id);
         }
     }
 
     public void InitGame()
     {
-        _synchronizationContext.Post(_ =>
-        {
-            SceneManager.LoadScene("Playground");
-        }, null);
+        SceneManager.LoadScene("Playground");
     }
 
     public void AddServertoServerList()
     {
         Client.serverlist.CreateServer(Client.clientID, localplayer_name, roomNameEntered);
-        ClientMessages.AddGamelobby(Client.clientID, localplayer_name, roomNameEntered);
+        ClientMessages.AddGamelobby(localplayer_name, roomNameEntered);
         isHostingLobby = true;
         startButton.enabled = true;
     }
 
     public void JoinMatch(int lobby_id)
     {
-        ClientMessages.JoinLobby(lobby_id, Client.clientID, localplayer_name);
+        ClientMessages.JoinLobby(lobby_id, localplayer_name);
         Client.myCurrentServer = lobby_id;
         Client.otherID = lobby_id;
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[lobby_id].player1_name;
@@ -148,28 +139,22 @@ public class LobbyManager : MonoBehaviour
 
     public void PlayerJoinedMatch(string playerName)
     {
-        _synchronizationContext.Post(_ =>
-        {
-            player2lobbyName.text = playerName;
-        }, null);
+        player2lobbyName.text = playerName;
     }
 
     public void PlayerLeftMatch()
     {
-        _synchronizationContext.Post(_ =>
-        {
-            var server = Client.serverlist.ServerlistDictionary[Client.clientID];
-            server.player2_id = default;
-            server.player2_name = "";
-            player2lobbyName.text = "";
-        }, null);
+        var server = Client.serverlist.ServerlistDictionary[Client.clientID];
+        server.player2_id = default;
+        server.player2_name = "";
+        player2lobbyName.text = "";
     }
 
     public void LeaveMatch()
     {
         if (!isHostingLobby)
         {
-            ClientMessages.LeaveLobby(Client.myCurrentServer, Client.clientID);
+            ClientMessages.LeaveLobby(Client.myCurrentServer);
             Client.myCurrentServer = 0;
             Client.otherID = 0;
             player1lobbyName.text = " - ";
@@ -192,50 +177,50 @@ public class LobbyManager : MonoBehaviour
 
             serverUIElement = Instantiate(serverPrefab, serverGrid.transform, false);
             serverUIElement.transform.GetChild(0).GetComponent<Text>().text = server.Value.server_name;
-            serverUIElement.GetComponent<Button>().onClick.AddListener(delegate
-            {
-                JoinMatch(server.Value.player1_id);
-            });
+            serverUIElement.GetComponent<Button>().onClick.AddListener(
+                delegate
+                {
+                    JoinMatch(server.Value.player1_id);
+                });
             serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 1|2";
             if (server.Value.server_full)
             {
                 serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 2|2";
                 serverUIElement.GetComponent<Button>().interactable = false;
             }
+
             serverElementList.Add(serverUIElement);
         }
     }
 
     public void CreateSingleServerlistEntry(int server_id)
     {
-        _synchronizationContext.Post(_ =>
-        {
-            var server = Client.serverlist.ServerlistDictionary[server_id];
-            serverUIElement = Instantiate(serverPrefab, serverGrid.transform, false);
-            serverUIElement.transform.GetChild(0).GetComponent<Text>().text = server.server_name;
-            serverUIElement.GetComponent<Button>().onClick.AddListener(delegate { JoinMatch(server.player1_id); });
-            serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 1|2";
-            if (server.server_full)
+        var server = Client.serverlist.ServerlistDictionary[server_id];
+        serverUIElement = Instantiate(serverPrefab, serverGrid.transform, false);
+        serverUIElement.transform.GetChild(0).GetComponent<Text>().text = server.server_name;
+        serverUIElement.GetComponent<Button>().onClick.AddListener(
+            delegate
             {
-                serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 2|2";
-                serverUIElement.GetComponent<Button>().interactable = false;
-            }
+                JoinMatch(server.player1_id);
+            });
+        serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 1|2";
+        if (server.server_full)
+        {
+            serverUIElement.transform.GetChild(1).GetComponent<Text>().text = "Players 2|2";
+            serverUIElement.GetComponent<Button>().interactable = false;
+        }
 
-            serverElementList.Add(serverUIElement);
-        }, null);
+        serverElementList.Add(serverUIElement);
     }
 
     public void ClearServerlist()
     {
-        _synchronizationContext.Post(_ =>
+        foreach (var server in serverElementList)
         {
-            foreach (var server in serverElementList)
-            {
-                Destroy(server);
-            }
+            Destroy(server);
+        }
 
-            serverElementList.Clear();
-        }, null);
+        serverElementList.Clear();
     }
 
     private void NoNameEntered(Text errorMessage)

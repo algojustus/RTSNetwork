@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RTSCommunicator : MonoBehaviour
@@ -23,7 +22,7 @@ public class RTSCommunicator : MonoBehaviour
     {
         // foreach (var sync in syncedObjects)
         // {
-            ClientMessages.BroadCastUnits(unitID,Client.myCurrentServer,Client.clientID, Client.otherID,sendObjects.transform.position, sendObjects.transform.rotation);
+            ClientMessages.BroadCastUnits(unitID,Client.myCurrentServer, Client.otherID,sendObjects.transform.position, sendObjects.transform.rotation);
         // }
         //syncedObjects.Clear();
     }
