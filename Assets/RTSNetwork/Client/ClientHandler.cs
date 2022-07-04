@@ -89,6 +89,7 @@ public class ClientHandler
         UnitData unit = new UnitData(unit_id, prefab_name, pos, rot, 100, 15, 15, 15);
         
         unit.SpawnIngameUnit();
+        unit.unit.transform.tag = "Player2";
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].UnitDictionary
             .Add(unit_id, unit);
     }
@@ -97,9 +98,10 @@ public class ClientHandler
     {
         int unit_id = packet.ReadInt();
         Vector3 pos = packet.ReadVector3();
-
         UnitData unit_pos = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID]
             .UnitDictionary[unit_id];
-        unit_pos.unit.transform.position = pos;
+        unit_pos.currentlyMovingToPos = pos;
+        unit_pos.MoveTo();
+        //unit_pos.unit.transform.position = pos;
     }
 }

@@ -26,26 +26,28 @@ public class RTSView : MonoBehaviour
         position = syncedObject.transform.position;
         rotation = syncedObject.transform.rotation;
         scale = syncedObject.transform.localScale;
-
         unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
             .unitcounter;
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitCounter();
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .AddUnit(unit_id, "Unit", position, rotation, 100, 15, 15, 15);
         //Später vlt aus der Unit rausladen, den Prefab namen
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        if (currentlySyncing)
+        if (currentlySyncing && syncedObject.transform.CompareTag("Player1"))
             SendSyncToView();
     }
 
     public void SendSyncToView()
     {
-        _rtsCommunicator.TransferSyncedObjects(unit_id, syncedObject);
+        //_rtsCommunicator.TransferSyncedObjects(unit_id, syncedObject);
     }
-
+    public void SendMoveToPos(Vector3 moveTo)
+    {
+        if (syncedObject.transform.CompareTag("Player1"))
+        {
+            _rtsCommunicator.TransferMoveToPos(unit_id, moveTo);
+        }
+    }
     public void EnableView()
     {
         currentlySyncing = true;

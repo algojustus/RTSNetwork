@@ -45,6 +45,7 @@ public class PlayerData
     public void AddUnit(int unit_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, int hitpoints,
         int _damage, int rangedResistance, int meleeResistance)
     {
+        Debug.Log("Creating Local Unit");
         UnitData unit = new UnitData(unit_id, prefab_name, spawnpos, spawnrota, hitpoints, _damage, rangedResistance,
             meleeResistance);
         UnitDictionary.Add(unit_id, unit);

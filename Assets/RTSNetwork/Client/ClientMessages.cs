@@ -85,15 +85,15 @@ public class ClientMessages : MonoBehaviour
         }
     }
 
-    public static void BroadCastUnits(int unitID, int targetserver,int receiver_id, Vector3 pos, Quaternion rota)
+    public static void BroadCastUnitPosition(int unitID, int targetserver,int receiver_id, Vector3 pos)
     {
+        Debug.Log("sending player movement");
         using (Packet answer = new Packet((int) ClientPackets.playerMovement))
         {
             answer.Write(receiver_id);
             answer.Write(targetserver);
             answer.Write(unitID);
             answer.Write(pos);
-            answer.Write(rota);
             SendTcpData(answer);
         }
     }

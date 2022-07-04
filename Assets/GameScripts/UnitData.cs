@@ -6,7 +6,9 @@ public class UnitData
     public int id;
     public string prefabname;
     public Vector3 position;
+    public Vector3 currentlyMovingToPos;
     public Quaternion rotation;
+    public int movementSpeed = 30;
     public int unit_hp;
     public int level;
     public int damage;
@@ -29,9 +31,12 @@ public class UnitData
     
     public void SpawnIngameUnit()
     {
-        unit = ObjectSpawner.SpawnObject(prefabname, position, rotation);
+        unit = ObjectSpawner.SpawnObject(prefabname+ "_prefab", position, rotation);
     }
-    
+    public void MoveTo()
+    {
+        unit.GetComponent<UnitSelected>().MoveToPosition(currentlyMovingToPos);
+    }
     public void SetIngameUnit(string prefab, Vector3 _position, Quaternion _rotation)
     {
         prefabname = prefab + "_prefab";

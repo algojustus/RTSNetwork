@@ -50,7 +50,7 @@ public class UnitController : MonoBehaviour
             rightClickPosition = CheckWhereMouseClicked();
             InitMovement(rightClickPosition);
         }
-        
+
         if (currentUnit != null)
         {
             mousePos = CheckWhereMouseClicked();
@@ -65,12 +65,23 @@ public class UnitController : MonoBehaviour
 
         if (unitSpawnMode && Input.GetMouseButtonDown(0))
         {
-            mousePos.y += 3f;
-            Instantiate(Resources.Load("Unit"),mousePos,new Quaternion());
+            int unit_id;
+            
+            mousePos.y += 3.5f;
+            GameObject unitspawned = Instantiate(Resources.Load("Unit"), mousePos, new Quaternion()) as GameObject;
+            unitspawned.transform.tag = "Player1";
             Destroy(currentUnit);
             unitSpawnMode = false;
-            
+
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .unitcounter;
+            Debug.Log("spawned unit: " + unit_id);
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddUnit(unit_id, "Unit", mousePos, new Quaternion(), 100, 15, 15, 15);
         }
+
         if (unitSpawnMode && Input.GetMouseButtonDown(1))
         {
             Destroy(currentUnit);
@@ -82,12 +93,12 @@ public class UnitController : MonoBehaviour
     {
         mousePos = CheckWhereMouseClicked();
         mousePos.y += 3f;
-        currentUnit = Instantiate(Resources.Load("Unit_prefab"),mousePos,new Quaternion()) as GameObject;
+        currentUnit = Instantiate(Resources.Load("Unit_prefab"), mousePos, new Quaternion()) as GameObject;
         var materialColor = currentUnit.GetComponent<Renderer>().material.color;
         materialColor.a = 0.1f;
         unitSpawnMode = true;
     }
-    
+
     private void InitMovement(Vector3 moveTo)
     {
         Vector3 shufflePosition = moveTo;
@@ -171,7 +182,7 @@ public class UnitController : MonoBehaviour
         foreach (var collider in check)
         {
             UnitSelected unitSelected = collider.collider.GetComponent<UnitSelected>();
-            if (unitSelected != null)
+            if (unitSelected != null && unitSelected.transform.CompareTag("Player1"))
             {
                 unitSelected.SetSelectedVisible(true);
                 selectedUnits.Add(unitSelected);

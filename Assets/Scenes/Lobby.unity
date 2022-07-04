@@ -705,7 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameInputField: {fileID: 2136136004}
-  localplayer_name: 
+  localplayer_name: sascha
   roomNameInputField: {fileID: 498755799}
   player1lobbyName: {fileID: 1127794610}
   player2lobbyName: {fileID: 776582273}
