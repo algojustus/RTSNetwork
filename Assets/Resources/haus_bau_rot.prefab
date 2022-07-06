@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6976912582178501342}
   - component: {fileID: 6976912582178501343}
   - component: {fileID: 6976912582178501340}
+  - component: {fileID: -5971639416108601093}
   m_Layer: 0
-  m_Name: House
-  m_TagString: Untagged
+  m_Name: haus_bau_rot
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 35b793accb8c4de42b70fb9ff8db8c62, type: 2}
+  - {fileID: 2100000, guid: 4068185d3d72ff047a18936f5f00afca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,3 +96,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5971639416108601093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6976912582178501341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab0397b2618a7354da90ab78f64dc972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingData: {fileID: 11400000, guid: fd824d0135870904da6e0c811f14a117, type: 2}

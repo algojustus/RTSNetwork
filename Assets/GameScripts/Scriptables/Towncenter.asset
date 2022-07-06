@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e69e0cbde232b4796180bb0cd1713e, type: 3}
+  m_Name: Towncenter
+  m_EditorClassIdentifier: 
+  building: {fileID: 0}
+  prefabname: tc
+  building_hp: 4500
+  damage: 5
+  ranged_resistance: 5
+  melee_resistance: 5
+  spawnables:
+  - {fileID: 6295617792985611932, guid: ff8c5965f56c22b4a85b6d8f2717052e, type: 3}
+  - {fileID: 5937337408045336349, guid: 2ffe449e93bc9844a8580b14117b3751, type: 3}
+  technologies:
+  - Loom
+  - Vision
+  - Horses

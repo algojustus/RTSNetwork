@@ -6,11 +6,22 @@ public class BuildingController : MonoBehaviour
     private Vector3 mousePos;
     private GameObject currentBuilding;
     private bool buildingMode;
+    private string currentBuildingPrefabName;
+    private string teamcolor;
+    public Canvas buildings;
+    public Canvas villagerClicked;
     private void Start()
     {
          _unitController = transform.GetComponent<UnitController>();
+         GetMyTeamColor();
     }
 
+    private void GetMyTeamColor()
+    {
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].GetMyTeamColor();
+        teamcolor = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .color;
+    }
     private void Update()
     {
         if (currentBuilding != null)
@@ -19,29 +30,60 @@ public class BuildingController : MonoBehaviour
             currentBuilding.transform.position = mousePos;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            InstantiateBuildingMode();
-        }
-
         if (buildingMode && Input.GetMouseButtonDown(0))
         {
-            Instantiate(Resources.Load("House"),mousePos,new Quaternion());
+            int building_id;
+            GameObject building = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
             Destroy(currentBuilding);
             buildingMode = false;
+            
+            mousePos.y += 3.5f;
+
+            building_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .buildingcounter;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .BuildingCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddBuilding(building_id,currentBuildingPrefabName,mousePos,new Quaternion(),building);
         }
+        
         if (buildingMode && Input.GetMouseButtonDown(1))
         {
             Destroy(currentBuilding);
+            currentBuildingPrefabName = "";
             buildingMode = false;
         }
     }
 
-    private void InstantiateBuildingMode()
+    public void InstantiateBuildingModeHouse()
     {
-        currentBuilding = Instantiate(Resources.Load("House"),mousePos,new Quaternion()) as GameObject;
-        var materialColor = currentBuilding.GetComponent<Renderer>().material.color;
-        materialColor.a = 0.1f;
+        currentBuildingPrefabName = "haus_bau"+teamcolor;
+        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
+        buildingMode = true;
+    }
+    
+    public void InstantiateBuildingModeWoodCutter()
+    {
+        currentBuildingPrefabName = "ressourcen_bau"+teamcolor;
+        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
+        buildingMode = true;
+    }
+    public void InstantiateBuildingModeStoneCutter()
+    {
+        currentBuildingPrefabName = "ressourcen_bau"+teamcolor;
+        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
+        buildingMode = true;
+    }
+    public void InstantiateBuildingModeBarracks()
+    {
+        currentBuildingPrefabName = "kaserne_bau"+teamcolor;    
+        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
+        buildingMode = true;
+    }
+    public void InstantiateBuildingModeTownCenter()
+    {
+        currentBuildingPrefabName = "tc_bau"+teamcolor;   
+        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
         buildingMode = true;
     }
 }

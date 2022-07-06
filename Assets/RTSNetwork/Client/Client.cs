@@ -9,7 +9,6 @@ public class Client : MonoBehaviour
     public static Serverlist serverlist;
     public static LobbyManager lobbyManager;
     public static Tcp tcp;
-    private static RTSCommunicator _communicator;
     private string serverIP = "";
     public static int clientID = 0;
     public static int otherID = 0;
@@ -43,7 +42,6 @@ public class Client : MonoBehaviour
     {
         GameObject find = GameObject.Find("LobbyManager");
         lobbyManager = find.GetComponent<LobbyManager>();
-        _communicator = transform.GetComponent<RTSCommunicator>();
         LoadSettings();
         tcp = new Tcp();
         StartClient();
@@ -198,7 +196,8 @@ public class Client : MonoBehaviour
             {(int) ServerPackets.playerJoined, ClientHandler.PlayerJoined},
             {(int) ServerPackets.serverlistRequested, ClientHandler.ReceiveServerlist},
             {(int) ServerPackets.spawnPlayer, ClientHandler.UnitCreated},
-            {(int) ServerPackets.playerPosition, ClientHandler.UnitPosUpdated}
+            {(int) ServerPackets.playerPosition, ClientHandler.UnitPosUpdated},
+            {(int) ServerPackets.spawnBuilding, ClientHandler.BuildingCreated}
         };
     }
 

@@ -84,6 +84,25 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+    public static void BroadCastBuildingCreation(int building_id, int targetserver,
+        int receiver_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, BuildingData data)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.spawnBuilding))
+        {
+            answer.Write(targetserver);
+            answer.Write(receiver_id);
+            answer.Write(building_id);
+            answer.Write(prefab_name);
+            answer.Write(spawnpos);
+            answer.Write(spawnrota);
+            answer.Write(data.building_hp);
+            answer.Write(data.building_dmg);
+            answer.Write(data.melee_resistance);
+            answer.Write(data.ranged_resistance);
+            SendTcpData(answer);
+        }
+    }
+    
 
     public static void BroadCastUnitPosition(int unitID, int targetserver,int receiver_id, Vector3 pos)
     {

@@ -29,7 +29,8 @@ public enum ClientPackets
     removeServer,
     gameStarted,
     playerMovement,
-    playerSpawn
+    playerSpawn,
+    spawnBuilding
 }
 
 public class Packet : IDisposable

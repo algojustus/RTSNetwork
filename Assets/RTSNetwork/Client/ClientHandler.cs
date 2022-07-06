@@ -81,19 +81,31 @@ public class ClientHandler
 
     public static void UnitCreated(Packet packet)
     {
-        //Scriptableobject auslesen
+        //Scriptableobject auslesen -> siehe bei buildings
         int unit_id = packet.ReadInt();
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();
         Quaternion rot = packet.ReadQuaternion();
-        UnitData unit = new UnitData(unit_id, prefab_name, pos, rot, 100, 15, 15, 15);
-        
+        UnitData unit = new UnitData(unit_id, prefab_name,pos,rot);
         unit.SpawnIngameUnit();
         unit.unit.transform.tag = "Player2";
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].UnitDictionary
             .Add(unit_id, unit);
     }
 
+    public static void BuildingCreated(Packet packet)
+    {
+        int unit_id = packet.ReadInt();
+        string prefab_name = packet.ReadString();
+        Vector3 pos = packet.ReadVector3();
+        Quaternion rot = packet.ReadQuaternion();
+        BuildingData building = new BuildingData(unit_id, prefab_name,pos,rot);
+        building.SpawnIngameBuilding();
+        building.building.transform.tag = "Player2";
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].BuildingDictionary
+            .Add(unit_id, building);
+    }
+    
     public static void UnitPosUpdated(Packet packet)
     {
         int unit_id = packet.ReadInt();
@@ -102,6 +114,5 @@ public class ClientHandler
             .UnitDictionary[unit_id];
         unit_pos.currentlyMovingToPos = pos;
         unit_pos.MoveTo();
-        //unit_pos.unit.transform.position = pos;
     }
 }

@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class UnitSelected : MonoBehaviour
 {
+    private RTSView _rtsView;
+    public Unit unitData;
     private GameObject _selectedGameObject;
     private Vector3 movePos;
-    [SerializeField] private float movementSpeed = 30;
     private bool currentlyMoving = false;
-    private RTSView _rtsView;
     void Awake()
     {
-        
         _selectedGameObject = transform.Find("Selected").gameObject;
         _rtsView = transform.GetComponent<RTSView>();
         SetSelectedVisible(false);
@@ -27,7 +26,7 @@ public class UnitSelected : MonoBehaviour
             var direction = movePos - transform.position;
             Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
             transform.rotation = rotation;
-            transform.position = Vector3.MoveTowards(transform.position, movePos,movementSpeed*Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, movePos,unitData.movementSpeed*Time.deltaTime);
         }
 
         if (transform.position == movePos)

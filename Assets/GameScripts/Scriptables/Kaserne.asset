@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e69e0cbde232b4796180bb0cd1713e, type: 3}
+  m_Name: Kaserne
+  m_EditorClassIdentifier: 
+  building: {fileID: 0}
+  prefabname: 
+  building_hp: 2500
+  damage: 0
+  ranged_resistance: 5
+  melee_resistance: 3
+  spawnables:
+  - {fileID: 7402993071310786277, guid: fbd02ff6edd8de546a1e8370f01cb8b7, type: 3}
+  - {fileID: 1912988981037428125, guid: 62751fd79776aa04bb2c11feb311eca8, type: 3}
+  - {fileID: 6837757795520837296, guid: e68f98ac2a6a1694483460276dd80fc6, type: 3}
+  - {fileID: 3952481574441566105, guid: a79759ef20e7a7843ae20c43843e40d1, type: 3}
+  technologies:
+  - Training
+  - Armor
+  - Steel

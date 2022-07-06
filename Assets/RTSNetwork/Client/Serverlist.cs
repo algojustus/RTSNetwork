@@ -67,8 +67,8 @@ public class Serverlist
         var server = ServerlistDictionary[Client.myCurrentServer];
         currently_ingame = true;
         server.PlayerDictionary = new Dictionary<int, PlayerData>();
-        server.PlayerDictionary.Add(1, new PlayerData(server.player1_id,server.player1_name,1));
-        server.PlayerDictionary.Add(2, new PlayerData(server.player2_id,server.player2_name,2));
+        server.PlayerDictionary.Add(1, new PlayerData(server.player1_id,server.player1_name,"_blau"));
+        server.PlayerDictionary.Add(2, new PlayerData(server.player2_id,server.player2_name,"_rot"));
     }
 
     public void ClearBuffers()

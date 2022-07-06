@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,16 +9,20 @@ public class PlayerData
 
     public int id;
     public string username;
-    public int color;
+    public string color;
 
     public int unitcounter = 1;
+    public int buildingcounter = 1;
 
     public void UnitCounter()
     {
         unitcounter++;
     }
-
-    public PlayerData(int _id, string _username, int _color)
+    public void BuildingCounter()
+    {
+        buildingcounter++;
+    }
+    public PlayerData(int _id, string _username, string _color)
     {
         id = _id;
         username = _username;
@@ -26,14 +31,19 @@ public class PlayerData
         BuildingDictionary = new Dictionary<int, BuildingData>();
     }
 
-    public void AddBuilding(int building_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, int hitpoints,
-        int rangedResistance, int meleeResistance)
+    public void GetMyTeamColor()
     {
-        BuildingData building = new BuildingData(building_id, prefab_name, spawnpos, spawnrota, hitpoints,
-            rangedResistance,
-            meleeResistance);
+        if(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_id == Client.clientID)
+            color = "_blau";
+        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_id == Client.clientID)
+            color = "_rot";
+    }
+    
+    public void AddBuilding(int building_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, GameObject _building)
+    {
+        BuildingData building = new BuildingData(building_id, prefab_name, spawnpos, spawnrota,_building);
         BuildingDictionary.Add(building_id, building);
-        //Send broadcast to both players
+        ClientMessages.BroadCastBuildingCreation(building_id, Client.myCurrentServer,Client.otherID,prefab_name, spawnpos, spawnrota,building);
     }
 
     public void DestroyBuilding(int building_id)
@@ -45,7 +55,6 @@ public class PlayerData
     public void AddUnit(int unit_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, int hitpoints,
         int _damage, int rangedResistance, int meleeResistance)
     {
-        Debug.Log("Creating Local Unit");
         UnitData unit = new UnitData(unit_id, prefab_name, spawnpos, spawnrota, hitpoints, _damage, rangedResistance,
             meleeResistance);
         UnitDictionary.Add(unit_id, unit);
