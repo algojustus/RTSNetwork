@@ -9,7 +9,6 @@ public class PlayerData
 
     public int id;
     public string username;
-    public string color;
 
     public int unitcounter = 1;
     public int buildingcounter = 1;
@@ -26,19 +25,10 @@ public class PlayerData
     {
         id = _id;
         username = _username;
-        color = _color;
         UnitDictionary = new Dictionary<int, UnitData>();
         BuildingDictionary = new Dictionary<int, BuildingData>();
     }
 
-    public void GetMyTeamColor()
-    {
-        if(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_id == Client.clientID)
-            color = "_blau";
-        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_id == Client.clientID)
-            color = "_rot";
-    }
-    
     public void AddBuilding(int building_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, GameObject _building)
     {
         BuildingData building = new BuildingData(building_id, prefab_name, spawnpos, spawnrota,_building);

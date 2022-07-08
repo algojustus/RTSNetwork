@@ -19,10 +19,9 @@ MonoBehaviour:
   ranged_resistance: 5
   melee_resistance: 3
   spawnables:
-  - {fileID: 7402993071310786277, guid: fbd02ff6edd8de546a1e8370f01cb8b7, type: 3}
-  - {fileID: 1912988981037428125, guid: 62751fd79776aa04bb2c11feb311eca8, type: 3}
-  - {fileID: 6837757795520837296, guid: e68f98ac2a6a1694483460276dd80fc6, type: 3}
-  - {fileID: 3952481574441566105, guid: a79759ef20e7a7843ae20c43843e40d1, type: 3}
+  - spear
+  - sword
+  - bow
   technologies:
   - Training
   - Armor

@@ -7,7 +7,7 @@ public class UnitSelected : MonoBehaviour
 {
     private RTSView _rtsView;
     public Unit unitData;
-    private GameObject _selectedGameObject;
+    public GameObject _selectedGameObject;
     private Vector3 movePos;
     private bool currentlyMoving = false;
     void Awake()
@@ -43,6 +43,7 @@ public class UnitSelected : MonoBehaviour
 
     public void MoveToPosition(Vector3 moveToPos)
     {
+        Debug.Log("move to pos");
         movePos = moveToPos;
         _rtsView.SendMoveToPos(movePos);
         currentlyMoving = true;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private float edgeSize = 30;
-    private float moveSize = 30f;
+    private float moveSize = 70f;
     private float scrollSpeed = 20f;
 
     public Vector2 mapLimits;

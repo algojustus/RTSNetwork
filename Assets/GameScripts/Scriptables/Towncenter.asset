@@ -19,8 +19,7 @@ MonoBehaviour:
   ranged_resistance: 5
   melee_resistance: 5
   spawnables:
-  - {fileID: 6295617792985611932, guid: ff8c5965f56c22b4a85b6d8f2717052e, type: 3}
-  - {fileID: 5937337408045336349, guid: 2ffe449e93bc9844a8580b14117b3751, type: 3}
+  - villager
   technologies:
   - Loom
   - Vision

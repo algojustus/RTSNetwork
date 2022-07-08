@@ -10,6 +10,6 @@ public class Building : ScriptableObject
     public int damage;
     public int ranged_resistance;
     public int melee_resistance;
-    public List<GameObject> spawnables;
+    public List<string> spawnables;
     public List<string> technologies;
 }

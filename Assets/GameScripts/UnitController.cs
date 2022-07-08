@@ -6,6 +6,7 @@ public class UnitController : MonoBehaviour
     private Vector3 leftClickPosition;
     private Vector3 rightClickPosition;
     private List<UnitSelected> selectedUnits;
+    private List<BuildingSelected> buildingUnits;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private RectTransform selectionArea;
@@ -15,25 +16,17 @@ public class UnitController : MonoBehaviour
     private float z_axis_offset = 0;
     private int unitCounter = 0;
     private Vector3 mousePos;
-    private GameObject currentUnit;
-    private bool unitSpawnMode;
     private GameObject gameMananger;
-    private string teamcolor;
-
+    private string currentUnitPrefabname;
+    
     void Awake()
     {
         gameMananger = GameObject.Find("GameManager");
         selectedUnits = new List<UnitSelected>();
+        buildingUnits = new List<BuildingSelected>();
         selectionArea.gameObject.SetActive(false);
-        GetMyTeamColor();
     }
-
-    private void GetMyTeamColor()
-    {
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].GetMyTeamColor();
-        teamcolor = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .color;
-    }
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -57,59 +50,87 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            Debug.Log("Init move");
             rightClickPosition = CheckWhereMouseClicked();
             InitMovement(rightClickPosition);
         }
-
-        if (currentUnit != null)
-        {
-            mousePos = CheckWhereMouseClicked();
-            mousePos.y += 3f;
-            currentUnit.transform.position = mousePos;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            InstantiateUnitSpawningMode();
-        }
-
-        if (unitSpawnMode && Input.GetMouseButtonDown(0))
-        {
-            int unit_id;
-            
-            mousePos.y += 3.5f;
-            GameObject unitspawned = Instantiate(Resources.Load("villager"+teamcolor), mousePos, new Quaternion()) as GameObject;
-            Destroy(currentUnit);
-            unitSpawnMode = false;
-
-            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                .unitcounter;
-            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                .UnitCounter();
-            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                .AddUnit(unit_id, "villager"+teamcolor, mousePos, new Quaternion(), 100, 15, 15, 15);
-        }
-
-        if (unitSpawnMode && Input.GetMouseButtonDown(1))
-        {
-            Destroy(currentUnit);
-            unitSpawnMode = false;
-        }
     }
 
-    private void InstantiateUnitSpawningMode()
+    public void InstantiateVillager(BuildingSelected buildingSelected)
     {
-        mousePos = CheckWhereMouseClicked();
-        mousePos.y += 3f;
-        currentUnit = Instantiate(Resources.Load("villager"+teamcolor), mousePos, new Quaternion()) as GameObject;
-        unitSpawnMode = true;
+        int unit_id;
+        Vector3 spawnPos = new Vector3(
+            buildingSelected._selectedGameObject.transform.position.x, 3f,
+            buildingSelected._selectedGameObject.transform.position.z);
+        currentUnitPrefabname = "villager"+Client.myGameColor;
+        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
+        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .unitcounter;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .UnitCounter();
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
+                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
     }
-
+    public void InstantiateSpear(BuildingSelected buildingSelected)
+    {
+        int unit_id;
+        Vector3 spawnPos = new Vector3(
+            buildingSelected._selectedGameObject.transform.position.x, 3f,
+            buildingSelected._selectedGameObject.transform.position.z);
+        currentUnitPrefabname = "spear"+Client.myGameColor;
+        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
+        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .unitcounter;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .UnitCounter();
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
+                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+    }
+    public void InstantiateSword(BuildingSelected buildingSelected)
+    {
+        int unit_id;
+        Vector3 spawnPos = new Vector3(
+            buildingSelected._selectedGameObject.transform.position.x, 3f,
+            buildingSelected._selectedGameObject.transform.position.z);
+        currentUnitPrefabname = "sword"+Client.myGameColor;
+        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
+        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .unitcounter;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .UnitCounter();
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
+                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+    }
+    public void InstantiateBow(BuildingSelected buildingSelected)
+    {
+        int unit_id;
+        Vector3 spawnPos = new Vector3(
+            buildingSelected._selectedGameObject.transform.position.x, 3f,
+            buildingSelected._selectedGameObject.transform.position.z);
+        currentUnitPrefabname = "bow"+Client.myGameColor;
+        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
+        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .unitcounter;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .UnitCounter();
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
+                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+    }
+    
     private void InitMovement(Vector3 moveTo)
     {
         Vector3 shufflePosition = moveTo;
         foreach (var units in selectedUnits)
         {
+            Debug.Log("moving now");
             shufflePosition = ShufflePosition(moveTo);
             units.MoveToPosition(shufflePosition);
         }
@@ -186,26 +207,34 @@ public class UnitController : MonoBehaviour
         RaycastHit[] check = Physics.BoxCastAll(center, scale, Vector3.up);
         foreach (var collider in check)
         {
-            UnitSelected unitSelected = collider.collider.GetComponent<UnitSelected>();
-            if (unitSelected != null && (unitSelected.transform.CompareTag("Player1") || unitSelected.transform.CompareTag("player1_villager")))
+            if(collider.transform.CompareTag("Player1") || collider.transform.CompareTag("player1_villager")){
+                UnitSelected unitSelected = collider.collider.GetComponent<UnitSelected>();
+                if (unitSelected != null)
+                {
+                    unitSelected.SetSelectedVisible(true);
+                    selectedUnits.Add(unitSelected);
+                    if (unitSelected.transform.CompareTag("player1_villager"))
+                    {
+                        gameMananger.GetComponent<BuildingController>().villagerClicked.gameObject.SetActive(true);
+                    }
+                }
+            }
+
+            if (collider.transform.CompareTag("player1_kaserne"))
             {
-                unitSelected.SetSelectedVisible(true);
-                selectedUnits.Add(unitSelected);
-                if (unitSelected.transform.CompareTag("player1_villager"))
-                {
-                    gameMananger.GetComponent<BuildingController>().villagerClicked.gameObject.SetActive(true);
-                    // Debug.Log("Player1_villager");
-                }
-                if (unitSelected.transform.CompareTag("player1_kaserne"))
-                {
-                    //Aufruf um die UI der kaserne zu initen
-                    // Debug.Log("player1_kaserne");
-                }
-                if (unitSelected.transform.CompareTag("player1_towncenter"))
-                {
-                    //Aufruf um die UI des TC zu initen
-                    // Debug.Log("player1_towncenter");
-                }
+                BuildingSelected building = collider.collider.GetComponent<BuildingSelected>();
+                buildingUnits.Add(building);
+                building.SetSelectedVisible(true);
+                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(collider.transform.GetComponent<BuildingSelected>().buildingData,building);
+                gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(true);
+            }
+            if (collider.transform.CompareTag("player1_towncenter"))
+            {
+                BuildingSelected building = collider.collider.GetComponent<BuildingSelected>();
+                buildingUnits.Add(building);
+                building.SetSelectedVisible(true);
+                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(collider.transform.GetComponent<BuildingSelected>().buildingData,building);
+                gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(true);
             }
         }
         
@@ -219,16 +248,23 @@ public class UnitController : MonoBehaviour
             {
                 gameMananger.GetComponent<BuildingController>().villagerClicked.gameObject.SetActive(false);
             }
-            if (units.transform.CompareTag("player1_kaserne"))
-            {
-               //Ui wieder ausmacehn
-            }
-            if (units.transform.CompareTag("player1_towncenter"))
-            {
-               //UI wieder ausmacehn
-            }
             units.SetSelectedVisible(false);
         }
+        foreach (var buildings in buildingUnits)
+        {
+            if (buildings.transform.CompareTag("player1_kaserne"))
+            {
+                gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
+                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData,buildings);
+            }
+            if (buildings.transform.CompareTag("player1_towncenter"))
+            {
+                gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
+                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData,buildings);
+            }
+            buildings.SetSelectedVisible(false);
+        }
+        buildingUnits.Clear();
         selectedUnits.Clear();
     }
 }

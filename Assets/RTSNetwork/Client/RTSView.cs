@@ -33,7 +33,7 @@ public class RTSView : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (currentlySyncing && syncedObject.transform.CompareTag("Player1"))
+        if (currentlySyncing && (syncedObject.transform.CompareTag("Player1") || syncedObject.transform.CompareTag("player1_villager")))
             SendSyncToView();
     }
 
@@ -43,7 +43,7 @@ public class RTSView : MonoBehaviour
     }
     public void SendMoveToPos(Vector3 moveTo)
     {
-        if (syncedObject.transform.CompareTag("Player1"))
+        if (syncedObject.transform.CompareTag("Player1") || syncedObject.transform.CompareTag("player1_villager"))
         {
             _rtsCommunicator.TransferMoveToPos(unit_id, moveTo);
         }

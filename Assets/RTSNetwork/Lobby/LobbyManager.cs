@@ -109,6 +109,7 @@ public class LobbyManager : MonoBehaviour
         if (server.player2_id != 0)
         {
             Client.myCurrentServer = Client.clientID;
+            Client.myGameColor = "_blau";
             ClientMessages.StartGamelobby(server.player2_id);
         }
     }
@@ -131,6 +132,7 @@ public class LobbyManager : MonoBehaviour
         ClientMessages.JoinLobby(lobby_id, localplayer_name);
         Client.myCurrentServer = lobby_id;
         Client.otherID = lobby_id;
+        Client.myGameColor = "_rot";
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[lobby_id].player1_name;
         player2lobbyName.text = localplayer_name;
         InitNextUIElement(LobbyRoom.gameObject);

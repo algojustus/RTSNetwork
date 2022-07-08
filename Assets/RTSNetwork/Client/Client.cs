@@ -13,6 +13,7 @@ public class Client : MonoBehaviour
     public static int clientID = 0;
     public static int otherID = 0;
     public static int myCurrentServer = 0;
+    public static string myGameColor;
     private static int dataBufferSize = 2048;
     public int serverPort;
     private static bool isConnected;
