@@ -45,7 +45,7 @@ public class BuildingController : MonoBehaviour
         foreach (var units in building.spawnables)
         {
             var unit = buildings.transform.GetChild(0).Find("Unit" + unitCount);
-             Debug.Log(unit);
+            unit.gameObject.AddComponent<Button>();
             unit.gameObject.SetActive(true);
             if(units == "villager")
                 unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InstantiateVillager(buildingSelected);});
@@ -75,14 +75,7 @@ public class BuildingController : MonoBehaviour
         foreach (var units in building.spawnables)
         {
             var unit = buildings.transform.GetChild(0).Find("Unit" + unitCount);
-            if(units == "villager")
-                unit.GetComponent<Button>().onClick.RemoveListener(delegate { _unitController.InstantiateVillager(buildingSelected);});
-            if(units == "spear")
-                unit.GetComponent<Button>().onClick.RemoveListener(delegate { _unitController.InstantiateSpear(buildingSelected);});
-            if(units == "sword")
-                unit.GetComponent<Button>().onClick.RemoveListener(delegate { _unitController.InstantiateSword(buildingSelected);});
-            if(units == "bow")
-                unit.GetComponent<Button>().onClick.RemoveListener(delegate { _unitController.InstantiateBow(buildingSelected);});
+            Destroy(unit.gameObject.GetComponent<Button>());
             unit.gameObject.SetActive(false);
             unitCount++;
         }
@@ -120,6 +113,11 @@ public class BuildingController : MonoBehaviour
                 .BuildingCounter();
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .AddBuilding(building_id,currentBuildingPrefabName,mousePos,new Quaternion(),building);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Screen.SetResolution(960, 540, false, 60);
         }
         
         if (buildingMode && Input.GetMouseButtonDown(1))

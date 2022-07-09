@@ -24,6 +24,7 @@ public class Client : MonoBehaviour
 
     private void Awake()
     {
+        Screen.SetResolution(1920, 1080, true, 60);
         DontDestroyOnLoad(transform);
         if (instance == null)
         {
