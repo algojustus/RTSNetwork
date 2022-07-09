@@ -1219,6 +1219,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec27726c729a7443adcdc6d3e1682f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ressourcesUI: {fileID: 1384249620}
+  food_ui: {fileID: 2009910903}
+  wood_ui: {fileID: 1913182416}
+  gold_ui: {fileID: 1938439596}
+  stone_ui: {fileID: 958424326}
+  villager_ui: {fileID: 966992945}
 --- !u!1 &482052616
 GameObject:
   m_ObjectHideFlags: 0

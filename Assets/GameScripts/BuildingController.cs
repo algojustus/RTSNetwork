@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BuildingController : MonoBehaviour
 {
     private UnitController _unitController;
+    private ResourcesUI _resources;
     private Vector3 mousePos;
     private GameObject currentBuilding;
     private bool buildingMode;
@@ -16,6 +17,7 @@ public class BuildingController : MonoBehaviour
     private void Start()
     {
          _unitController = transform.GetComponent<UnitController>();
+         _resources = transform.GetComponent<ResourcesUI>();
          SpawnInitTowncenter();
     }
 
@@ -29,7 +31,7 @@ public class BuildingController : MonoBehaviour
         if(Client.myGameColor == "_rot")
             startCord = new Vector3(-5,0,-14);
 
-        cameraStartPos.transform.position = startCord;
+        cameraStartPos.transform.position = new Vector3(startCord.x,cameraStartPos.transform.position.y,startCord.z);
         GameObject building = Instantiate(Resources.Load("tc"+Client.myGameColor),startCord,new Quaternion()) as GameObject;
         building_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
             .buildingcounter;
@@ -113,6 +115,7 @@ public class BuildingController : MonoBehaviour
                 .BuildingCounter();
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .AddBuilding(building_id,currentBuildingPrefabName,mousePos,new Quaternion(),building);
+            _resources.BuildWithResources(currentBuildingPrefabName);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -128,36 +131,61 @@ public class BuildingController : MonoBehaviour
         }
     }
 
+    
     public void InstantiateBuildingModeHouse()
     {
-        currentBuildingPrefabName = "haus_bau"+Client.myGameColor;
-        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
-        buildingMode = true;
+        bool allowedToBuild = _resources.HasEnoughResources(0,60,0,0);
+        if (allowedToBuild)
+        {
+            currentBuildingPrefabName = "haus_bau"+Client.myGameColor;
+            currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
+            buildingMode = true;
+        }
     }
     
     public void InstantiateBuildingModeWoodCutter()
     {
-        currentBuildingPrefabName = "ressourcen_bau"+Client.myGameColor;
-        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
-        buildingMode = true;
+        bool allowedToBuild = _resources.HasEnoughResources(0,100,0,0);
+        if (allowedToBuild)
+        {
+            currentBuildingPrefabName = "ressourcen_bau" + Client.myGameColor;
+            currentBuilding =
+                Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
+            buildingMode = true;
+        }
     }
     public void InstantiateBuildingModeStoneCutter()
     {
-        currentBuildingPrefabName = "ressourcen_bau"+Client.myGameColor;
-        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
-        buildingMode = true;
+        bool allowedToBuild = _resources.HasEnoughResources(0,100,0,0);
+        if (allowedToBuild)
+        {
+            currentBuildingPrefabName = "ressourcen_bau" + Client.myGameColor;
+            currentBuilding =
+                Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
+            buildingMode = true;
+        }
     }
     public void InstantiateBuildingModeBarracks()
     {
-        currentBuildingPrefabName = "kaserne_bau"+Client.myGameColor;    
-        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
-        buildingMode = true;
+        bool allowedToBuild = _resources.HasEnoughResources(0,150,0,0);
+        if (allowedToBuild)
+        {
+            currentBuildingPrefabName = "kaserne_bau" + Client.myGameColor;
+            currentBuilding =
+                Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
+            buildingMode = true;
+        }
     }
     public void InstantiateBuildingModeTownCenter()
     {
-        currentBuildingPrefabName = "tc_bau"+Client.myGameColor;   
-        currentBuilding = Instantiate(Resources.Load(currentBuildingPrefabName),mousePos,new Quaternion()) as GameObject;
-        buildingMode = true;
+        bool allowedToBuild = _resources.HasEnoughResources(0,275,0,150);
+        if (allowedToBuild)
+        {
+            currentBuildingPrefabName = "tc_bau" + Client.myGameColor;
+            currentBuilding =
+                Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
+            buildingMode = true;
+        }
     }
     
     public void InstantiateBuildingModeTownCenterDone()

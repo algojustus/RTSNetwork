@@ -17,6 +17,7 @@ public class UnitController : MonoBehaviour
     private int unitCounter = 0;
     private Vector3 mousePos;
     private GameObject gameMananger;
+    private ResourcesUI _resources;
     private string currentUnitPrefabname;
     
     void Awake()
@@ -25,6 +26,7 @@ public class UnitController : MonoBehaviour
         selectedUnits = new List<UnitSelected>();
         buildingUnits = new List<BuildingSelected>();
         selectionArea.gameObject.SetActive(false);
+        _resources = gameMananger.GetComponent<ResourcesUI>();
     }
     
     void Update()
@@ -50,7 +52,6 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Init move");
             rightClickPosition = CheckWhereMouseClicked();
             InitMovement(rightClickPosition);
         }
@@ -58,71 +59,127 @@ public class UnitController : MonoBehaviour
 
     public void InstantiateVillager(BuildingSelected buildingSelected)
     {
-        int unit_id;
-        Vector3 spawnPos = new Vector3(
-            buildingSelected._selectedGameObject.transform.position.x, 3f,
-            buildingSelected._selectedGameObject.transform.position.z);
-        currentUnitPrefabname = "villager"+Client.myGameColor;
-        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
-        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
-        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .unitcounter;
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .UnitCounter();
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
-                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+        bool allowedToCreate = _resources.HasEnoughResources(50,0,0,0);
+        if (allowedToCreate)
+        {
+            int unit_id;
+            Vector3 spawnPos = new Vector3(
+                buildingSelected._selectedGameObject.transform.position.x,
+                3f,
+                buildingSelected._selectedGameObject.transform.position.z);
+            currentUnitPrefabname = "villager" + Client.myGameColor;
+            GameObject currentUnit =
+                Instantiate(Resources.Load(currentUnitPrefabname), spawnPos, new Quaternion()) as GameObject;
+            UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .unitcounter;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddUnit(
+                    unit_id,
+                    currentUnitPrefabname,
+                    spawnPos,
+                    new Quaternion(),
+                    data.unitData.unit_hp,
+                    data.unitData.damage,
+                    data.unitData.ranged_resistance,
+                    data.unitData.melee_resistance);
+            _resources.BuildWithResources(currentUnitPrefabname);
+        }
     }
     public void InstantiateSpear(BuildingSelected buildingSelected)
     {
-        int unit_id;
-        Vector3 spawnPos = new Vector3(
-            buildingSelected._selectedGameObject.transform.position.x, 3f,
-            buildingSelected._selectedGameObject.transform.position.z);
-        currentUnitPrefabname = "spear"+Client.myGameColor;
-        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
-        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
-        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .unitcounter;
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .UnitCounter();
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
-                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+        bool allowedToCreate = _resources.HasEnoughResources(30,25,0,0);
+        if (allowedToCreate)
+        {
+            int unit_id;
+            Vector3 spawnPos = new Vector3(
+                buildingSelected._selectedGameObject.transform.position.x,
+                3f,
+                buildingSelected._selectedGameObject.transform.position.z);
+            currentUnitPrefabname = "spear" + Client.myGameColor;
+            GameObject currentUnit =
+                Instantiate(Resources.Load(currentUnitPrefabname), spawnPos, new Quaternion()) as GameObject;
+            UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .unitcounter;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddUnit(
+                    unit_id,
+                    currentUnitPrefabname,
+                    spawnPos,
+                    new Quaternion(),
+                    data.unitData.unit_hp,
+                    data.unitData.damage,
+                    data.unitData.ranged_resistance,
+                    data.unitData.melee_resistance);
+            _resources.BuildWithResources(currentUnitPrefabname);
+        }
     }
     public void InstantiateSword(BuildingSelected buildingSelected)
     {
-        int unit_id;
-        Vector3 spawnPos = new Vector3(
-            buildingSelected._selectedGameObject.transform.position.x, 3f,
-            buildingSelected._selectedGameObject.transform.position.z);
-        currentUnitPrefabname = "sword"+Client.myGameColor;
-        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
-        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
-        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .unitcounter;
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .UnitCounter();
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
-                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+        bool allowedToCreate = _resources.HasEnoughResources(60,0,35,0);
+        if (allowedToCreate)
+        {
+            int unit_id;
+            Vector3 spawnPos = new Vector3(
+                buildingSelected._selectedGameObject.transform.position.x,
+                3f,
+                buildingSelected._selectedGameObject.transform.position.z);
+            currentUnitPrefabname = "sword" + Client.myGameColor;
+            GameObject currentUnit =
+                Instantiate(Resources.Load(currentUnitPrefabname), spawnPos, new Quaternion()) as GameObject;
+            UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .unitcounter;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddUnit(
+                    unit_id,
+                    currentUnitPrefabname,
+                    spawnPos,
+                    new Quaternion(),
+                    data.unitData.unit_hp,
+                    data.unitData.damage,
+                    data.unitData.ranged_resistance,
+                    data.unitData.melee_resistance);
+            _resources.BuildWithResources(currentUnitPrefabname);
+        }
     }
     public void InstantiateBow(BuildingSelected buildingSelected)
     {
-        int unit_id;
-        Vector3 spawnPos = new Vector3(
-            buildingSelected._selectedGameObject.transform.position.x, 3f,
-            buildingSelected._selectedGameObject.transform.position.z);
-        currentUnitPrefabname = "bow"+Client.myGameColor;
-        GameObject currentUnit = Instantiate(Resources.Load(currentUnitPrefabname),spawnPos,new Quaternion()) as GameObject;
-        UnitSelected data = currentUnit.GetComponent<UnitSelected>();
-        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .unitcounter;
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .UnitCounter();
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .AddUnit(unit_id, currentUnitPrefabname, spawnPos, new Quaternion(), data.unitData.unit_hp,
-                data.unitData.damage, data.unitData.ranged_resistance, data.unitData.melee_resistance);
+        bool allowedToCreate = _resources.HasEnoughResources(0,35,50,0);
+        if (allowedToCreate)
+        {
+            int unit_id;
+            Vector3 spawnPos = new Vector3(
+                buildingSelected._selectedGameObject.transform.position.x,
+                3f,
+                buildingSelected._selectedGameObject.transform.position.z);
+            currentUnitPrefabname = "bow" + Client.myGameColor;
+            GameObject currentUnit =
+                Instantiate(Resources.Load(currentUnitPrefabname), spawnPos, new Quaternion()) as GameObject;
+            UnitSelected data = currentUnit.GetComponent<UnitSelected>();
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .unitcounter;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .AddUnit(
+                    unit_id,
+                    currentUnitPrefabname,
+                    spawnPos,
+                    new Quaternion(),
+                    data.unitData.unit_hp,
+                    data.unitData.damage,
+                    data.unitData.ranged_resistance,
+                    data.unitData.melee_resistance);
+            _resources.BuildWithResources(currentUnitPrefabname);
+        }
     }
     
     private void InitMovement(Vector3 moveTo)
@@ -130,7 +187,6 @@ public class UnitController : MonoBehaviour
         Vector3 shufflePosition = moveTo;
         foreach (var units in selectedUnits)
         {
-            Debug.Log("moving now");
             shufflePosition = ShufflePosition(moveTo);
             units.MoveToPosition(shufflePosition);
         }
@@ -197,6 +253,7 @@ public class UnitController : MonoBehaviour
 
     private void DrawSelectionBox()
     {
+        bool selectBuildings = true;
         Vector3 mouseReleased = CheckWhereMouseClicked();
         Vector3 scale = leftClickPosition - mouseReleased;
         scale.x = Mathf.Abs(scale.x);
@@ -205,6 +262,7 @@ public class UnitController : MonoBehaviour
         scale = scale * 0.5f;
         Vector3 center = (leftClickPosition + mouseReleased) * 0.5f;
         RaycastHit[] check = Physics.BoxCastAll(center, scale, Vector3.up);
+
         foreach (var collider in check)
         {
             if(collider.transform.CompareTag("Player1") || collider.transform.CompareTag("player1_villager")){
@@ -236,8 +294,19 @@ public class UnitController : MonoBehaviour
                 gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(collider.transform.GetComponent<BuildingSelected>().buildingData,building);
                 gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(true);
             }
+            
         }
-        
+
+        if (selectedUnits.Count > 0 && buildingUnits.Count > 0)
+        {
+            foreach (var building in buildingUnits)
+            {
+                building.SetSelectedVisible(false);
+            }
+            gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
+            gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildingUnits[0].buildingData,buildingUnits[0]);
+            buildingUnits.Clear();
+        }
     }
 
     private void DeactivateAllUnitsBeforeNewSelect()
