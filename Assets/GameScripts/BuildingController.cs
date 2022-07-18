@@ -50,13 +50,13 @@ public class BuildingController : MonoBehaviour
             unit.gameObject.AddComponent<Button>();
             unit.gameObject.SetActive(true);
             if(units == "villager")
-                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InstantiateVillager(buildingSelected);});
+                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitVillager(buildingSelected);});
             if(units == "spear")
-                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InstantiateSpear(buildingSelected);});
+                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitSpear(buildingSelected);});
             if(units == "sword")
-                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InstantiateSword(buildingSelected);});
+                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitSword(buildingSelected);});
             if(units == "bow")
-                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InstantiateBow(buildingSelected);});
+                unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitBow(buildingSelected);});
             unitCount++;
         }
         foreach (var units in building.technologies)

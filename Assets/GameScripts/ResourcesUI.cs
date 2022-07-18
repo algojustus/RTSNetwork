@@ -12,13 +12,12 @@ public class ResourcesUI : MonoBehaviour
    public Text gold_ui;
    public Text stone_ui;
    public Text villager_ui;
-   private int food = 250;
-   private int wood = 550;
-   private int gold = 150;
-   private int stone = 250;
+   private int food = 1250;
+   private int wood = 1550;
+   private int gold = 1150;
+   private int stone = 1250;
    private int villager_max = 5;
    private int villager_count = 0;
-
    private void Start()
    {
       food_ui.text = ""+food;

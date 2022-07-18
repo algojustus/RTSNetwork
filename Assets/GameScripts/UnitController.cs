@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class UnitController : MonoBehaviour
     private GameObject gameMananger;
     private ResourcesUI _resources;
     private string currentUnitPrefabname;
+    public Slider progressbar;
     
     void Awake()
     {
@@ -56,9 +59,39 @@ public class UnitController : MonoBehaviour
             InitMovement(rightClickPosition);
         }
     }
-
-    public void InstantiateVillager(BuildingSelected buildingSelected)
+    
+    IEnumerator SummonCooldown(float cooldown)
     {
+        progressbar.gameObject.SetActive(true);
+        for (float alpha = 0; alpha <= cooldown; alpha += 0.1f)
+        {
+            progressbar.value += 0.1f/cooldown;
+            yield return new WaitForSeconds(.1f);
+        }
+        progressbar.gameObject.SetActive(false);
+        progressbar.value = 0;
+    }
+
+    public void InitVillager(BuildingSelected buildingSelected)
+    {
+        StartCoroutine(InstantiateVillager(buildingSelected));
+    }
+    public void InitSpear(BuildingSelected buildingSelected)
+    {
+        StartCoroutine(InstantiateSpear(buildingSelected));
+    }
+    public void InitSword(BuildingSelected buildingSelected)
+    {
+        StartCoroutine(InstantiateSword(buildingSelected));
+    }
+    public void InitBow(BuildingSelected buildingSelected)
+    {
+        StartCoroutine(InstantiateBow(buildingSelected));
+    }
+    public IEnumerator InstantiateVillager(BuildingSelected buildingSelected)
+    {
+        StartCoroutine(SummonCooldown(5));
+        yield return new WaitForSeconds(5);
         bool allowedToCreate = _resources.HasEnoughResources(50,0,0,0);
         if (allowedToCreate)
         {
@@ -88,8 +121,10 @@ public class UnitController : MonoBehaviour
             _resources.BuildWithResources(currentUnitPrefabname);
         }
     }
-    public void InstantiateSpear(BuildingSelected buildingSelected)
+    public IEnumerator InstantiateSpear(BuildingSelected buildingSelected)
     {
+        StartCoroutine(SummonCooldown(10));
+        yield return new WaitForSeconds(10);
         bool allowedToCreate = _resources.HasEnoughResources(30,25,0,0);
         if (allowedToCreate)
         {
@@ -119,8 +154,10 @@ public class UnitController : MonoBehaviour
             _resources.BuildWithResources(currentUnitPrefabname);
         }
     }
-    public void InstantiateSword(BuildingSelected buildingSelected)
+    public IEnumerator InstantiateSword(BuildingSelected buildingSelected)
     {
+        StartCoroutine(SummonCooldown(20));
+        yield return new WaitForSeconds(20);
         bool allowedToCreate = _resources.HasEnoughResources(60,0,35,0);
         if (allowedToCreate)
         {
@@ -150,8 +187,10 @@ public class UnitController : MonoBehaviour
             _resources.BuildWithResources(currentUnitPrefabname);
         }
     }
-    public void InstantiateBow(BuildingSelected buildingSelected)
+    public IEnumerator InstantiateBow(BuildingSelected buildingSelected)
     {
+        StartCoroutine(SummonCooldown(10));
+        yield return new WaitForSeconds(10);
         bool allowedToCreate = _resources.HasEnoughResources(0,35,50,0);
         if (allowedToCreate)
         {
