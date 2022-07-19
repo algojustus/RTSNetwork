@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class Gamesettings : MonoBehaviour
 {
-    private int maxVillager = 100;
-    private int startResources = 1;
-    private int maxPlayers = 2;
+    public int maxVillager = 100;
+    public int startResources = 1;
+    public int maxPlayers = 2;
     private int p1Color= 1;
     private int p2Color= 2;
     private int p3Color= 3;
@@ -25,12 +26,19 @@ public class Gamesettings : MonoBehaviour
     public Image teamImageP2;
     public Image teamImageP3;
     public Image teamImageP4;
+    public Text teamNumberP1;
+    public Text teamNumberP2;
+    public Text teamNumberP3;
+    public Text teamNumberP4;
+    
+    public bool isAllowedToSend = true;
     public void IncreaseVillagers()
     {
         if (maxVillager >= 200)
             return;
         maxVillager += 25;
         villagers.text = ""+maxVillager;
+        ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
     }
 
     public void DecreaseVillagers()
@@ -39,6 +47,7 @@ public class Gamesettings : MonoBehaviour
             return;
         maxVillager -= 25;
         villagers.text = ""+maxVillager;
+        ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
     }
 
     public void IncreaseResources()
@@ -47,6 +56,7 @@ public class Gamesettings : MonoBehaviour
         if (startResources > 3)
             startResources = 1;
         SetResource(startResources);
+        ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
     }
 
     public void DecreaseResources()
@@ -55,6 +65,7 @@ public class Gamesettings : MonoBehaviour
         if (startResources < 1)
             startResources = 3;
         SetResource(startResources);
+        ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
     }
 
     public void SetResource(int number)
@@ -65,6 +76,9 @@ public class Gamesettings : MonoBehaviour
             resources.text = "Plenty";
         if (number == 3)
             resources.text = "High";
+        if(isAllowedToSend)
+            ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        isAllowedToSend = true;
     }
 
     public void IncreasePlayers()
@@ -77,6 +91,9 @@ public class Gamesettings : MonoBehaviour
         if (maxPlayers == 4)
             playerUI[1].gameObject.SetActive(true);
         players.text = "" +maxPlayers;
+        if(isAllowedToSend)
+            ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        isAllowedToSend = true;
     }
 
     public void DecreasePlayers()
@@ -89,6 +106,9 @@ public class Gamesettings : MonoBehaviour
         if (maxPlayers == 2)
             playerUI[0].gameObject.SetActive(false); 
         players.text = "" +maxPlayers;
+        if(isAllowedToSend)
+            ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        isAllowedToSend = true;
     }
 
     public void TeamColorPlayer1()
@@ -96,7 +116,8 @@ public class Gamesettings : MonoBehaviour
         p1Color++;
         if (p1Color >= 5)
             p1Color = 1;
-        SwitchColor(p1Color, teamImageP1);
+        SwitchColor(1,p1Color, teamImageP1);
+        teamNumberP1.text = ""+p1Color;
     }
 
     public void TeamColorPlayer2()
@@ -104,15 +125,18 @@ public class Gamesettings : MonoBehaviour
         p2Color++;
         if (p2Color >= 5)
             p2Color = 1;
-        SwitchColor(p2Color, teamImageP2);
+        SwitchColor(2,p2Color, teamImageP2);
+        teamNumberP2.text = ""+p2Color;
     }
 
     public void TeamColorPlayer3()
     {
         p3Color++;
         if (p3Color >= 5)
+            
             p3Color = 1;
-        SwitchColor(p3Color, teamImageP3);
+        SwitchColor(3,p3Color, teamImageP3);
+        teamNumberP3.text = ""+p3Color;
     }
 
     public void TeamColorPlayer4()
@@ -120,25 +144,29 @@ public class Gamesettings : MonoBehaviour
         p4Color++;
         if (p4Color >= 5)
             p4Color = 1;
-        SwitchColor(p4Color, teamImageP4);
+        SwitchColor(4,p4Color, teamImageP4);
+        teamNumberP4.text = ""+p4Color;
     }
 
-    public void SwitchColor(int player, Image teamcolor)
+    public void SwitchColor(int player,int colorNumber, Image teamcolor)
     {
-        switch (player)
+        switch (colorNumber)
         {
             case 1:
-                teamcolor.color = Color.blue;
+                teamcolor.color = Color.cyan;
                 break;
             case 2:
-                teamcolor.color = Color.red;
+                teamcolor.color = Color.black;
                 break;
             case 3:
-                teamcolor.color = Color.green;
+                teamcolor.color = Color.gray;
                 break;
             case 4:
                 teamcolor.color = Color.yellow;
                 break;
         }
+        if(isAllowedToSend)
+            ClientMessages.TransferTeamColor(Client.myCurrentServer, player);
+        isAllowedToSend = true;
     }
 }

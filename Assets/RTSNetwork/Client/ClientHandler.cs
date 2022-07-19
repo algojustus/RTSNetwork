@@ -7,6 +7,9 @@ public class ClientHandler
         string msg = welcomeMessage.ReadString();
         int myId = welcomeMessage.ReadInt();
         Client.clientID = myId;
+        Client.lobbyManager.playerui_id.text = "Player ID: " +myId; 
+        Client.lobbyManager.connectionText.text = "Connected";
+        Client.lobbyManager.connectionStatus.color = Color.green;
         Debug.Log(msg);
         ClientMessages.UserIdReceived();
     }
@@ -114,5 +117,44 @@ public class ClientHandler
             .UnitDictionary[unit_id];
         unit_pos.currentlyMovingToPos = pos;
         unit_pos.MoveTo();
+    }
+    public static void SettingsUpdated(Packet packet)
+    {
+        Gamesettings gamesettings = Client.lobbyManager.settings;
+        int players = packet.ReadInt();
+        int villagers = packet.ReadInt();
+        int startResources = packet.ReadInt();
+        gamesettings.isAllowedToSend = false;
+        gamesettings.SetResource(startResources);
+        gamesettings.villagers.text = "" + villagers;
+        gamesettings.startResources = startResources;
+        gamesettings.maxVillager = villagers;
+        
+        if (gamesettings.maxPlayers < players)
+        {
+            gamesettings.isAllowedToSend = false;
+            gamesettings.IncreasePlayers();
+            return;
+        }
+        if (gamesettings.maxPlayers > players)
+        {
+            gamesettings.isAllowedToSend = false;
+            gamesettings.DecreasePlayers();
+        }
+    }
+    public static void TeamSettingUpdated(Packet packet)
+    {
+        Client.lobbyManager.settings.isAllowedToSend = false;
+        switch (packet.ReadInt())
+        {
+            case 1: Client.lobbyManager.settings.TeamColorPlayer1();
+                break;
+            case 2: Client.lobbyManager.settings.TeamColorPlayer2();
+                break;
+            case 3: Client.lobbyManager.settings.TeamColorPlayer3();
+                break;
+            case 4: Client.lobbyManager.settings.TeamColorPlayer4();
+                break;
+        }
     }
 }

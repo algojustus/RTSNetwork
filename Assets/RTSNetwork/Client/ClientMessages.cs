@@ -106,7 +106,6 @@ public class ClientMessages : MonoBehaviour
 
     public static void BroadCastUnitPosition(int unitID, int targetserver,int receiver_id, Vector3 pos)
     {
-        Debug.Log("sending player movement");
         using (Packet answer = new Packet((int) ClientPackets.playerMovement))
         {
             answer.Write(receiver_id);
@@ -116,7 +115,28 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
-    
+
+    public static void TransferLobbySettings(int server_id, int max_players, int max_villagers,int startResources)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.settings))
+        {
+            answer.Write(server_id);
+            answer.Write(max_players);
+            answer.Write(max_villagers);
+            answer.Write(startResources);
+            SendTcpData(answer);
+        }
+    }
+    public static void TransferTeamColor(int server_id, int player)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.teamsettings))
+        {
+            answer.Write(server_id);
+            answer.Write(player);
+            SendTcpData(answer);
+        }
+    }
+
     private static void SendTcpData(Packet packet)
     {
         packet.WriteLength();

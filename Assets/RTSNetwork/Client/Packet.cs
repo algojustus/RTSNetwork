@@ -15,7 +15,9 @@ public enum ServerPackets
     spawnPlayer,
     spawnBuilding,
     playerPosition,
-    playerRotation
+    playerRotation,
+    settings,
+    teamsettings
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -30,7 +32,9 @@ public enum ClientPackets
     gameStarted,
     playerMovement,
     playerSpawn,
-    spawnBuilding
+    spawnBuilding,
+    settings,
+    teamsettings
 }
 
 public class Packet : IDisposable

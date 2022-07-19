@@ -17,6 +17,7 @@ public class Client : MonoBehaviour
     private static int dataBufferSize = 2048;
     public int serverPort;
     private static bool isConnected;
+    private static bool wasDisconnected;
 
     private delegate void PacketHandler(Packet packet);
 
@@ -35,6 +36,17 @@ public class Client : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (wasDisconnected)
+        {
+            lobbyManager.connectionText.text = "Disconnected";
+            lobbyManager.connectionStatus.color = Color.red;
+            Debug.Log("player was disconnected");
+            isConnected = false;
+            wasDisconnected = false;
+        }
+    }
     private void OnApplicationQuit()
     {
         Disconnect();
@@ -55,11 +67,14 @@ public class Client : MonoBehaviour
         serverPort = 11000; //Convert.ToInt32(PlayerPrefs.GetString("ServerPort"));
     }
 
-    private void StartClient()
+    public void StartClient()
     {
-        isConnected = true;
-        InitializeClientData();
-        tcp.Connect();
+        if (!isConnected)
+        {
+            InitializeClientData();
+            tcp.Connect();
+            isConnected = true;
+        }
     }
 
     public class Tcp
@@ -158,15 +173,16 @@ public class Client : MonoBehaviour
             while (_packetLength > 0 && _packetLength <= receivedData.UnreadLength())
             {
                 byte[] _packetBytes = receivedData.ReadBytes(_packetLength);
-                ThreadManager.ExecuteOnMainThread(() =>
-                {
-                    using (Packet _packet = new Packet(_packetBytes))
+                ThreadManager.ExecuteOnMainThread(
+                    () =>
                     {
-                        int _packetId = _packet.ReadInt();
-                        packetHandlers[_packetId](_packet);
-                    }
-                });
-            
+                        using (Packet _packet = new Packet(_packetBytes))
+                        {
+                            int _packetId = _packet.ReadInt();
+                            packetHandlers[_packetId](_packet);
+                        }
+                    });
+
                 _packetLength = 0;
                 if (receivedData.UnreadLength() >= 4)
                 {
@@ -199,16 +215,15 @@ public class Client : MonoBehaviour
             {(int) ServerPackets.serverlistRequested, ClientHandler.ReceiveServerlist},
             {(int) ServerPackets.spawnPlayer, ClientHandler.UnitCreated},
             {(int) ServerPackets.playerPosition, ClientHandler.UnitPosUpdated},
-            {(int) ServerPackets.spawnBuilding, ClientHandler.BuildingCreated}
+            {(int) ServerPackets.spawnBuilding, ClientHandler.BuildingCreated},
+            {(int) ServerPackets.settings, ClientHandler.SettingsUpdated},
+            {(int) ServerPackets.teamsettings, ClientHandler.TeamSettingUpdated},
         };
     }
 
     private static void Disconnect()
     {
-        if (isConnected)
-        {
-            isConnected = false;
-            tcp.socket.Close();
-        }
+        wasDisconnected = true;
+        tcp.socket.Close();
     }
 }

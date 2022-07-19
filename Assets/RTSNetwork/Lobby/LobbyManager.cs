@@ -26,7 +26,10 @@ public class LobbyManager : MonoBehaviour
     private List<GameObject> serverElementList;
     private bool isHostingLobby;
     public static LobbyManager instance;
-
+    public Gamesettings settings;
+    public Text connectionText;
+    public Text playerui_id;
+    public Image connectionStatus;
     private void Awake()
     {
         if (instance == null)
@@ -121,6 +124,7 @@ public class LobbyManager : MonoBehaviour
 
     public void AddServertoServerList()
     {
+        Client.myCurrentServer = Client.clientID;
         Client.serverlist.CreateServer(Client.clientID, localplayer_name, roomNameEntered);
         ClientMessages.AddGamelobby(localplayer_name, roomNameEntered);
         isHostingLobby = true;
@@ -136,7 +140,7 @@ public class LobbyManager : MonoBehaviour
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[lobby_id].player1_name;
         player2lobbyName.text = localplayer_name;
         InitNextUIElement(LobbyRoom.gameObject);
-        startButton.enabled = false;
+        startButton.interactable = false;
     }
 
     public void PlayerJoinedMatch(string playerName)
