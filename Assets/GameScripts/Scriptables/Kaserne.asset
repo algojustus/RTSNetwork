@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Kaserne
   m_EditorClassIdentifier: 
   building: {fileID: 0}
+  buildingtime: 70
   prefabname: 
   building_hp: 2500
   damage: 0

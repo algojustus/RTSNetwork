@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Towncenter
   m_EditorClassIdentifier: 
   building: {fileID: 0}
+  buildingtime: 60
   prefabname: tc
   building_hp: 4500
   damage: 5

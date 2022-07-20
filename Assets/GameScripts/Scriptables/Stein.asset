@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Stein
   m_EditorClassIdentifier: 
   building: {fileID: 0}
+  buildingtime: 25
   prefabname: stein
   building_hp: 1500
   damage: 0

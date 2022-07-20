@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Haus
   m_EditorClassIdentifier: 
   building: {fileID: 0}
+  buildingtime: 15
   prefabname: haus
   building_hp: 750
   damage: 0
