@@ -658,6 +658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 163884048584877315}
   - component: {fileID: 2464463714861768089}
+  - component: {fileID: 2555068940030273416}
   m_Layer: 0
   m_Name: tc_bau_blau
   m_TagString: Player1
@@ -780,6 +781,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 1c8d92d26d5fa9849a61aa816643d784, type: 2}
   _selectedGameObject: {fileID: 0}
+--- !u!65 &2555068940030273416
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652435906790260665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 31.165764, y: 5.593148, z: 30.037018}
+  m_Center: {x: 0.08636856, y: 2.2965746, z: 0.3400116}
 --- !u!1 &909420633843258671
 GameObject:
   m_ObjectHideFlags: 0

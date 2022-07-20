@@ -212,6 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitData: {fileID: 11400000, guid: c61aa0ec59e8ff04ba76f966d21494c9, type: 2}
+  _selectedGameObject: {fileID: 0}
 --- !u!114 &1806116829115501046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5937337408045336349}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5000001
   m_Height: 2

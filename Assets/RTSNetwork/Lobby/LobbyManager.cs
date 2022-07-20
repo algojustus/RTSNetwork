@@ -117,6 +117,10 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    public void SetTestColor()
+    {
+        Client.myGameColor = "_blue";
+    }
     public void InitGame()
     {
         SceneManager.LoadScene("Playground");

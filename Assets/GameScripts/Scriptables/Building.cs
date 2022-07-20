@@ -5,6 +5,7 @@ using UnityEngine;
 public class Building : ScriptableObject
 {
     public GameObject building;
+    public int buildingtime;
     public string prefabname;
     public int building_hp;
     public int damage;

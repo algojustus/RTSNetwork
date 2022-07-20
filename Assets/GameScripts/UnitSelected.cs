@@ -43,7 +43,6 @@ public class UnitSelected : MonoBehaviour
 
     public void MoveToPosition(Vector3 moveToPos)
     {
-        Debug.Log("move to pos");
         movePos = moveToPos;
         _rtsView.SendMoveToPos(movePos);
         currentlyMoving = true;
