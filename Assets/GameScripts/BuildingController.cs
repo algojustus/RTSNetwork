@@ -148,7 +148,7 @@ public class BuildingController : MonoBehaviour
         bool allowedToBuild = _resources.HasEnoughResources(0,100,0,0);
         if (allowedToBuild)
         {
-            currentBuildingPrefabName = "ressourcen_bau" + Client.myGameColor;
+            currentBuildingPrefabName = "holz_bau" + Client.myGameColor;
             currentBuilding =
                 Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
             buildingMode = true;
@@ -159,7 +159,7 @@ public class BuildingController : MonoBehaviour
         bool allowedToBuild = _resources.HasEnoughResources(0,100,0,0);
         if (allowedToBuild)
         {
-            currentBuildingPrefabName = "ressourcen_bau" + Client.myGameColor;
+            currentBuildingPrefabName = "stein_bau" + Client.myGameColor;
             currentBuilding =
                 Instantiate(Resources.Load(currentBuildingPrefabName), mousePos, new Quaternion()) as GameObject;
             buildingMode = true;

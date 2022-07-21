@@ -17,7 +17,7 @@ public class RTSView : MonoBehaviour
     private Quaternion rotation;
     private Vector3 scale;
 
-    private int unit_id;
+    public int unit_id;
 
     void Awake()
     {

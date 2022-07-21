@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 673f3eb6dde87ba4c90b1a68b92d1d83, type: 2}
   _selectedGameObject: {fileID: 0}
+  isGround: 1
 --- !u!1 &616646034982252499
 GameObject:
   m_ObjectHideFlags: 0

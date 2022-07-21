@@ -98,6 +98,7 @@ public class ClientHandler
 
     public static void BuildingCreated(Packet packet)
     {
+        Debug.Log("Buildingcreated");
         int unit_id = packet.ReadInt();
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();

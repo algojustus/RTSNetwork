@@ -10,6 +10,7 @@ public class UnitSelected : MonoBehaviour
     public GameObject _selectedGameObject;
     private Vector3 movePos;
     private bool currentlyMoving = false;
+    public bool isIdle = false;
     void Awake()
     {
         _selectedGameObject = transform.Find("Selected").gameObject;

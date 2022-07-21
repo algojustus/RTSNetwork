@@ -4465,6 +4465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7928131034853045078}
   - component: {fileID: 2529007832242855002}
+  - component: {fileID: 6663486669760364290}
   m_Layer: 0
   m_Name: kaserne_bau_rot
   m_TagString: Player1
@@ -4573,7 +4574,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 7cce12f427019b84fbd34b7cbaa00b41, type: 2}
-  _selectedGameObject: {fileID: 0}
+  _selectedGameObject: {fileID: 4440396532566221253, guid: 7165e053668cf7b448abbe73ed44a67e, type: 3}
+  isGround: 1
+  buildStarted: 0
+  buildinglocation: {x: 0, y: 0, z: 0}
+  finishedBuilding: {fileID: 4440396532566221253, guid: 7165e053668cf7b448abbe73ed44a67e, type: 3}
+--- !u!65 &6663486669760364290
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7299685765684537836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 31.567078, y: 3.905818, z: 20.843979}
+  m_Center: {x: -0.09829712, y: 1.452909, z: 0.23615265}
 --- !u!1 &7623434651482238282
 GameObject:
   m_ObjectHideFlags: 0

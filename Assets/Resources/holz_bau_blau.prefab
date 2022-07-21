@@ -4384,9 +4384,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8610673566530841562}
   - component: {fileID: 3945814911219291177}
-  - component: {fileID: 7184584862052454667}
+  - component: {fileID: 5797233292721952535}
   m_Layer: 0
-  m_Name: haus_bau_blau
+  m_Name: holz_bau_blau
   m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4474,12 +4474,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 673f3eb6dde87ba4c90b1a68b92d1d83, type: 2}
-  _selectedGameObject: {fileID: 1590478641125254690, guid: 70b9d1d124de6db4ab97dd8907992558, type: 3}
+  _selectedGameObject: {fileID: 510872817354666739, guid: 1ca6b87a36b9bd847aa1990aeb1e3098, type: 3}
   isGround: 1
   buildStarted: 0
   buildinglocation: {x: 0, y: 0, z: 0}
-  finishedBuilding: {fileID: 1590478641125254690, guid: 70b9d1d124de6db4ab97dd8907992558, type: 3}
---- !u!65 &7184584862052454667
+  finishedBuilding: {fileID: 510872817354666739, guid: 1ca6b87a36b9bd847aa1990aeb1e3098, type: 3}
+--- !u!65 &5797233292721952535
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4490,8 +4490,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 21.1801, y: 5.089689, z: 21.60727}
-  m_Center: {x: 0.64307404, y: 2.044844, z: 0.17974854}
+  m_Size: {x: 21.109543, y: 4.185053, z: 19.977448}
+  m_Center: {x: 0.13907623, y: 1.5925264, z: 0.0025634766}
 --- !u!1001 &1682339708620063159
 PrefabInstance:
   m_ObjectHideFlags: 0

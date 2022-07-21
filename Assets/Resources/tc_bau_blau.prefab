@@ -780,7 +780,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 1c8d92d26d5fa9849a61aa816643d784, type: 2}
-  _selectedGameObject: {fileID: 0}
+  _selectedGameObject: {fileID: 961939338806456103, guid: af4fe3d87ab6736468d905ee82b41aab, type: 3}
+  isGround: 1
+  buildStarted: 0
+  buildinglocation: {x: 0, y: 0, z: 0}
+  finishedBuilding: {fileID: 961939338806456103, guid: af4fe3d87ab6736468d905ee82b41aab, type: 3}
 --- !u!65 &2555068940030273416
 BoxCollider:
   m_ObjectHideFlags: 0
