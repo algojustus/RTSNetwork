@@ -39,6 +39,7 @@ public class Gamesettings : MonoBehaviour
         maxVillager += 25;
         villagers.text = ""+maxVillager;
         ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_villagers = maxVillager;
     }
 
     public void DecreaseVillagers()
@@ -48,6 +49,7 @@ public class Gamesettings : MonoBehaviour
         maxVillager -= 25;
         villagers.text = ""+maxVillager;
         ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_villagers = maxVillager;
     }
 
     public void IncreaseResources()
@@ -57,6 +59,7 @@ public class Gamesettings : MonoBehaviour
             startResources = 1;
         SetResource(startResources);
         ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].start_resources = startResources;
     }
 
     public void DecreaseResources()
@@ -66,6 +69,7 @@ public class Gamesettings : MonoBehaviour
             startResources = 3;
         SetResource(startResources);
         ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].start_resources = startResources;
     }
 
     public void SetResource(int number)
@@ -94,6 +98,7 @@ public class Gamesettings : MonoBehaviour
         if(isAllowedToSend)
             ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
         isAllowedToSend = true;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_players = maxPlayers;
     }
 
     public void DecreasePlayers()
@@ -109,6 +114,7 @@ public class Gamesettings : MonoBehaviour
         if(isAllowedToSend)
             ClientMessages.TransferLobbySettings(Client.myCurrentServer,maxPlayers,maxVillager,startResources);
         isAllowedToSend = true;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_players = maxPlayers;
     }
 
     public void TeamColorPlayer1()

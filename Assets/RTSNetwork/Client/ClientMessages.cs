@@ -136,6 +136,20 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+    
+    public static void BuildingInit(int server_id, int receiver, int building_id, int multiplier, bool initialized, bool finished)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.building))
+        {
+            answer.Write(receiver);
+            answer.Write(server_id);
+            answer.Write(building_id);
+            answer.Write(multiplier);  
+            answer.Write(initialized);
+            answer.Write(finished);
+            SendTcpData(answer);
+        }
+    }
 
     private static void SendTcpData(Packet packet)
     {

@@ -90,6 +90,8 @@ public class UnitController : MonoBehaviour
     }
     public IEnumerator InstantiateVillager(BuildingSelected buildingSelected)
     {
+        if (_resources.villager_max <= _resources.villager_count)
+            yield break;
         StartCoroutine(SummonCooldown(5));
         yield return new WaitForSeconds(5);
         bool allowedToCreate = _resources.HasEnoughResources(50,0,0,0);
@@ -120,9 +122,13 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+        _resources.villager_count++;
+        _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
     public IEnumerator InstantiateSpear(BuildingSelected buildingSelected)
     {
+        if (_resources.villager_max <= _resources.villager_count)
+            yield break;
         StartCoroutine(SummonCooldown(10));
         yield return new WaitForSeconds(10);
         bool allowedToCreate = _resources.HasEnoughResources(30,25,0,0);
@@ -153,9 +159,13 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+        _resources.villager_count++;
+        _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
     public IEnumerator InstantiateSword(BuildingSelected buildingSelected)
     {
+        if (_resources.villager_max <= _resources.villager_count)
+            yield break;
         StartCoroutine(SummonCooldown(20));
         yield return new WaitForSeconds(20);
         bool allowedToCreate = _resources.HasEnoughResources(60,0,35,0);
@@ -186,9 +196,13 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+        _resources.villager_count++;
+        _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
     public IEnumerator InstantiateBow(BuildingSelected buildingSelected)
     {
+        if (_resources.villager_max <= _resources.villager_count)
+            yield break;
         StartCoroutine(SummonCooldown(10));
         yield return new WaitForSeconds(10);
         bool allowedToCreate = _resources.HasEnoughResources(0,35,50,0);
@@ -219,6 +233,8 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+        _resources.villager_count++;
+        _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
     
     private void InitMovement(Vector3 moveTo)

@@ -115,6 +115,7 @@ public class BuildingController : MonoBehaviour
                 .BuildingCounter();
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .AddBuilding(building_id,currentBuildingPrefabName,mousePos,new Quaternion(),building);
+            building.GetComponent<BuildingSelected>().building_id = building_id;
             _resources.BuildWithResources(currentBuildingPrefabName);
         }
 

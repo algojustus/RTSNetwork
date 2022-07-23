@@ -13,6 +13,10 @@ public class Serverlist
     public string player2_name = "";
     public bool currently_ingame;
     public bool server_full;
+    public int max_villagers;
+    public int start_resources;
+    public int max_players;
+    public int start_villagers = 5;
 
     public Serverlist(int creator_id, string creator_name, string _server_name)
     {

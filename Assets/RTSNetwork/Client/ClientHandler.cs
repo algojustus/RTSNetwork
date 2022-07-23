@@ -131,6 +131,10 @@ public class ClientHandler
         gamesettings.startResources = startResources;
         gamesettings.maxVillager = villagers;
         
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_villagers = villagers;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_players = players;
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].start_resources = startResources;
+        
         if (gamesettings.maxPlayers < players)
         {
             gamesettings.isAllowedToSend = false;
@@ -156,6 +160,40 @@ public class ClientHandler
                 break;
             case 4: Client.lobbyManager.settings.TeamColorPlayer4();
                 break;
+        }
+    }
+    
+    public static void BuildBuilding(Packet packet)
+    {
+        int player = packet.ReadInt();
+        int building_id = packet.ReadInt();
+        int multiplier = packet.ReadInt();
+        bool initialized = packet.ReadBool() ;
+        bool finished =  packet.ReadBool();
+        GameObject currentbuilding = null;
+        BuildingSelected select = null;
+        if (initialized)
+        {
+            currentbuilding = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[player]
+                .BuildingDictionary[building_id].building;
+            select = currentbuilding.GetComponent<BuildingSelected>();
+            select.finishedBuilding = select.InitBuildingMultiplayer();
+            
+            return;
+        }
+
+        if (finished)
+            return;
+        currentbuilding = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[player]
+            .BuildingDictionary[building_id].building;
+        select = currentbuilding.GetComponent<BuildingSelected>();
+        select.buildinghp += 1 *multiplier;
+        select.finishedBuilding.transform.position += new Vector3(0,20f/select.buildingData.buildingtime*multiplier,0);
+        if (select.buildinghp >= select.buildingData.buildingtime)
+        {
+            currentbuilding.SetActive(false);
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[player]
+                .BuildingDictionary[building_id].building = select.finishedBuilding;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingSelected : MonoBehaviour
 {
@@ -12,12 +13,17 @@ public class BuildingSelected : MonoBehaviour
     private float currentBuildtime = 0;
     private float currentIdleTime = 0;
     private int secondsDone = 1;
+    public int buildinghp = 0;
     public bool isGround;
     public bool buildStarted;
     public Vector3 buildinglocation;
     public GameObject finishedBuilding;
+    public ResourcesUI resourceUi;
+    public int building_id;
+
     void Awake()
     {
+        resourceUi = GameObject.Find("GameManager").GetComponent<ResourcesUI>();
         _selectedGameObject = transform.Find("Selected").gameObject;
         SetSelectedVisible(false);
         unitsEntered = new Dictionary<int, GameObject>();
@@ -37,7 +43,6 @@ public class BuildingSelected : MonoBehaviour
             return;
         
         DoBuild(idleVillagers);
-        Debug.Log(idleVillagers);
     }
 
     public void SetSelectedVisible(bool visible)
@@ -82,13 +87,15 @@ public class BuildingSelected : MonoBehaviour
         currentIdleTime = 0;
     }
 
-    private void DoBuild(int multiplier)
+    public void DoBuild(int multiplier)
     {
         if (!buildStarted)
         {
             buildinglocation.y -= 20;
             finishedBuilding = Instantiate(finishedBuilding,buildinglocation,new Quaternion());
+            finishedBuilding.GetComponent<BuildingSelected>().enabled = false;
             buildStarted = true;
+            ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, multiplier, true,false);
             return;
         }
 
@@ -97,18 +104,36 @@ public class BuildingSelected : MonoBehaviour
             currentBuildtime += Time.deltaTime;
             if (currentBuildtime >= secondsDone)
             {
+                ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, multiplier, false,false);
                 secondsDone++;
+                buildinghp += 1 *multiplier;
                 finishedBuilding.transform.position += new Vector3(0,20f/buildingData.buildingtime*multiplier,0);
             }
-            if (currentBuildtime >= buildingData.buildingtime)
+            if (buildinghp >= buildingData.buildingtime)
             {
-               gameObject.SetActive(false);
+                gameObject.SetActive(false);
+               ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, 1, false,true);
+               finishedBuilding.GetComponent<BuildingSelected>().enabled = true;
+               if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
+               {
+                   if (resourceUi.villager_max >= resourceUi.villager_cap)
+                       return;
+                   resourceUi.villager_max += 5;
+                   resourceUi.villager_ui.text = resourceUi.villager_count + "|" + resourceUi.villager_max;
+               }
             }
         }
-        //counter / hp einfügen, die dann hochgezählt werden, je mehr dorfbewohner desto höher wird gezählt 10 * dorfbewohner
-        //add new progressbar
+        //BUG::Wenn das Gebäude 19 HP hat und 10 Dorfbewohner 10 HP draufbauen, so hat es am Ende 29HP und ist zu weit oben in der Luft
+        //TODO:: new progressbar
     }
 
+    public GameObject InitBuildingMultiplayer()
+    {
+        buildinglocation.y -= 21;
+        finishedBuilding = Instantiate(finishedBuilding,buildinglocation,new Quaternion());
+        finishedBuilding.GetComponent<BuildingSelected>().enabled = false;
+        return finishedBuilding;
+    }
     private void StayIdle(GameObject unit)
     {
         currentIdleTime += Time.deltaTime;
