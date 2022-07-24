@@ -151,6 +151,17 @@ public class ClientMessages : MonoBehaviour
         }
     }
 
+    public static void SendReadyCheck(int server_id, int player, bool ready)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.readycheck))
+        {
+            answer.Write(server_id);
+            answer.Write(player);
+            answer.Write(ready);
+            SendTcpData(answer);
+        }
+    }
+
     private static void SendTcpData(Packet packet)
     {
         packet.WriteLength();

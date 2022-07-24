@@ -8,15 +8,24 @@ public class Serverlist
     
     public int player1_id;
     public int player2_id;
+    public int player3_id;
+    public int player4_id;
+    public bool player1_readycheck;
+    public bool player2_readycheck;
+    public bool player3_readycheck;
+    public bool player4_readycheck;
     public string server_name = "";
     public string player1_name = "";
     public string player2_name = "";
+    public string player3_name = "";
+    public string player4_name = "";
     public bool currently_ingame;
     public bool server_full;
     public int max_villagers;
     public int start_resources;
     public int max_players;
     public int start_villagers = 5;
+    
 
     public Serverlist(int creator_id, string creator_name, string _server_name)
     {

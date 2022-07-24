@@ -219,6 +219,7 @@ public class Client : MonoBehaviour
             {(int) ServerPackets.settings, ClientHandler.SettingsUpdated},
             {(int) ServerPackets.teamsettings, ClientHandler.TeamSettingUpdated},
             {(int) ServerPackets.building, ClientHandler.BuildBuilding},
+            {(int) ServerPackets.readycheck, ClientHandler.ReadyCheck},
         };
     }
 

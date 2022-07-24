@@ -107,23 +107,25 @@ public class BuildingSelected : MonoBehaviour
                 ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, multiplier, false,false);
                 secondsDone++;
                 buildinghp += 1 *multiplier;
+                if (buildinghp >= buildingData.buildingtime)
+                {
+                    int leftover = buildingData.buildingtime - buildinghp;
+                    finishedBuilding.transform.position += new Vector3(0,20f/buildingData.buildingtime*leftover,0);
+                    gameObject.SetActive(false);
+                    ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, 1, false,true);
+                    finishedBuilding.GetComponent<BuildingSelected>().enabled = true;
+                    if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
+                    {
+                        if (resourceUi.villager_max >= resourceUi.villager_cap)
+                            return;
+                        resourceUi.villager_max += 5;
+                        resourceUi.villager_ui.text = resourceUi.villager_count + "|" + resourceUi.villager_max;
+                    }
+                    return;
+                }
                 finishedBuilding.transform.position += new Vector3(0,20f/buildingData.buildingtime*multiplier,0);
             }
-            if (buildinghp >= buildingData.buildingtime)
-            {
-                gameObject.SetActive(false);
-               ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, 1, false,true);
-               finishedBuilding.GetComponent<BuildingSelected>().enabled = true;
-               if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
-               {
-                   if (resourceUi.villager_max >= resourceUi.villager_cap)
-                       return;
-                   resourceUi.villager_max += 5;
-                   resourceUi.villager_ui.text = resourceUi.villager_count + "|" + resourceUi.villager_max;
-               }
-            }
         }
-        //BUG::Wenn das Gebäude 19 HP hat und 10 Dorfbewohner 10 HP draufbauen, so hat es am Ende 29HP und ist zu weit oben in der Luft
         //TODO:: new progressbar
     }
 

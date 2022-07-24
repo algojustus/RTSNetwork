@@ -196,4 +196,11 @@ public class ClientHandler
                 .BuildingDictionary[building_id].building = select.finishedBuilding;
         }
     }
+
+    public static void ReadyCheck(Packet packet)
+    {
+        int player = packet.ReadInt();
+        bool ready = packet.ReadBool();
+        Client.lobbyManager.settings.ReadyCheck(player,ready);
+    }
 }

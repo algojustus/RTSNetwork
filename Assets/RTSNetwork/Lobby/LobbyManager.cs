@@ -93,7 +93,7 @@ public class LobbyManager : MonoBehaviour
         isHostingLobby = true;
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player1_name;
         player2lobbyName.text = Client.serverlist.ServerlistDictionary[Client.clientID].player2_name;
-        startButton.enabled = true;
+        startButton.interactable = false;
     }
 
     public void RemoveServerOutOfServerList()
@@ -132,7 +132,7 @@ public class LobbyManager : MonoBehaviour
         Client.serverlist.CreateServer(Client.clientID, localplayer_name, roomNameEntered);
         ClientMessages.AddGamelobby(localplayer_name, roomNameEntered);
         isHostingLobby = true;
-        startButton.enabled = true;
+        startButton.interactable = false;
     }
 
     public void JoinMatch(int lobby_id)
@@ -141,6 +141,7 @@ public class LobbyManager : MonoBehaviour
         Client.myCurrentServer = lobby_id;
         Client.otherID = lobby_id;
         Client.myGameColor = "_rot";
+        Client.serverlist.ServerlistDictionary[lobby_id].player2_id = Client.clientID; //provisorisch und muss später über dynamische player ausgabe gemacht werden
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[lobby_id].player1_name;
         player2lobbyName.text = localplayer_name;
         InitNextUIElement(LobbyRoom.gameObject);
@@ -152,6 +153,30 @@ public class LobbyManager : MonoBehaviour
         player2lobbyName.text = playerName;
     }
 
+    public void CheckifAllReady()
+    {
+        bool player1, player2, player3, player4;
+        player1  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_id > 0; 
+        player2  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_id > 0; 
+        player3  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player3_id > 0; 
+        player4  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player4_id > 0; 
+        CheckForPlayers(player1,player2,player3,player4);
+    }
+    public void CheckForPlayers(bool p1,bool p2, bool p3, bool p4)
+    {
+        bool p1ready,p2ready,p3ready,p4ready;
+        p1ready = !p1 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_readycheck;
+        p2ready = !p2 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_readycheck;
+        p3ready = !p3 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player3_readycheck;
+        p4ready = !p4 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player4_readycheck;
+
+        if (Client.myCurrentServer != Client.clientID)
+            return;
+        if(p1ready && p2ready && p3ready && p4ready)
+            startButton.interactable = true;
+        else
+            startButton.interactable = false;
+    }
     public void PlayerLeftMatch()
     {
         var server = Client.serverlist.ServerlistDictionary[Client.clientID];
