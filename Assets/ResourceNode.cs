@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceNode
 {
    private int resourceCount;
-   private Transform node;
+   public Transform node;
    public ResourceNode(Transform resource, int resourceCount)
    {
       node = resource;

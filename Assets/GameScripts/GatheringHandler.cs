@@ -17,21 +17,24 @@ public class GatheringHandler : MonoBehaviour
         _resourceList = new List<ResourceNode>();
     }
 
-    private ResourceNode GetCloseResource()
+    private List<ResourceNode> GetCloseResource(ResourceClicked oldnode)
     {
-        List<ResourceNode> cloneList = new List<ResourceNode>(_resourceList);
-        foreach (var node in cloneList)
+        _resourceList.Clear();
+        Collider[] hitColliders = Physics.OverlapSphere(oldnode.transform.position, 15f);
+        foreach (var collider in hitColliders)
         {
-            if (!node.HasResources())
-                _resourceList.Remove(node);
+            if (collider.transform.GetComponent<ResourceClicked>() != null && collider.transform.GetComponent<ResourceClicked>().ResourceNode.HasResources())
+            {
+                _resourceList.Add(collider.transform.GetComponent<ResourceClicked>().ResourceNode);
+            }
         }
-
-        return cloneList.Count > 0 ? null : _resourceList[UnityEngine.Random.Range(0,_resourceList.Count)];
+        Debug.Log(_resourceList.Count);
+        return _resourceList;
     }
 
-    public static ResourceNode GetResourceNode()
+    public static List<ResourceNode> GetResourceNode(ResourceClicked oldnode)
     {
-        return instance.GetCloseResource();
+        return instance.GetCloseResource(oldnode);
     }
     private Transform GetClosestStorage()
     {

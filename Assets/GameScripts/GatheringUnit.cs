@@ -15,12 +15,14 @@ public class GatheringUnit : MonoBehaviour
     private bool idleGatherer;
     private Vector3 movepos;
     public ResourcesUI resourceUi;
-
+    private List<ResourceNode> _resourceList;
+    
     private void Awake()
     {
         unitControlls = gameObject.GetComponent<UnitSelected>();
         state = State.Idle;
         resourceUi = GameObject.Find("GameManager").GetComponent<ResourcesUI>();
+        _resourceList = new List<ResourceNode>();
     }
 
     private enum State
@@ -54,16 +56,18 @@ public class GatheringUnit : MonoBehaviour
             case State.Gathering:
                 if (unitControlls.isIdle)
                 {
-                    if(!resourceNode.HasResources())
-                        
+                    storage = GatheringHandler.GetStorage();
+                    if (!resourceNode.HasResources())
+                    {
+                           state = State.MovingToStorage;
+                           break;
+                    }
+                    
                     if (resourceInventoryAmount >= 3)
                     {
-                        //Move to storage
-                        storage = GatheringHandler.GetStorage();
                         state = State.MovingToStorage;
                     } else
                     {
-                        //Gather Resources
                         StartGatheringEffect(() => {
                             resourceInventoryAmount++;
                             resourceNode.ReduceResourceCount();
@@ -76,6 +80,20 @@ public class GatheringUnit : MonoBehaviour
             case State.MovingToStorage:
                 if (unitControlls.isIdle)
                 {
+
+                    if (resourceNode == null)
+                    {
+                        state = State.Idle;
+                        return;
+                    }  
+
+                    if (!resourceNode.HasResources())
+                    {
+                        //var tempnode = resourceNode;
+                        //Destroy(resourceNode.node.gameObject);
+                        _resourceList = GatheringHandler.GetResourceNode(resourceNode.node.GetComponent<ResourceClicked>());
+                        GetNextCloseResource();
+                    }
                     MoveToStorage(
                         storage.position, () =>
                         {
@@ -84,11 +102,19 @@ public class GatheringUnit : MonoBehaviour
                             state = State.Idle;
                         });
                 }
-
                 break;
         }
     }
 
+
+    private void GetNextCloseResource()
+    {
+        resourceNode = null;
+        if (_resourceList.Count <= 0)
+            return;
+        resourceNode = _resourceList[0];
+        _resourceList.Remove(resourceNode);
+    }
     private void MoveToResource(Vector3 pos, float stopDistance, Action onArrival)
     {
         movepos = pos;
