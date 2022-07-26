@@ -87,7 +87,6 @@ public class Gamesettings : MonoBehaviour
             playernr = 3;
         if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player4_id == player)
             playernr = 4;
-        Debug.Log("your pnummer"+playernr);
         return playernr;
     }
     public void IncreaseVillagers()

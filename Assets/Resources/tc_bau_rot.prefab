@@ -1469,6 +1469,7 @@ GameObject:
   - component: {fileID: 2290070082075023698}
   - component: {fileID: 6661731685765817495}
   - component: {fileID: 3820820687804540151}
+  - component: {fileID: 373506469593414632}
   m_Layer: 0
   m_Name: tc_bau_rot
   m_TagString: Player1
@@ -1591,10 +1592,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: 1c8d92d26d5fa9849a61aa816643d784, type: 2}
   _selectedGameObject: {fileID: 335477725058050720, guid: 5106509c6feb22c4ba8f1098e4077d94, type: 3}
+  buildinghp: 0
   isGround: 1
   buildStarted: 0
   buildinglocation: {x: 0, y: 0, z: 0}
   finishedBuilding: {fileID: 335477725058050720, guid: 5106509c6feb22c4ba8f1098e4077d94, type: 3}
+  resourceUi: {fileID: 0}
+  building_id: 0
 --- !u!65 &3820820687804540151
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1608,6 +1612,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 30.31189, y: 4.619371, z: 31.833267}
   m_Center: {x: 0.12055969, y: 1.8096855, z: 0.43862152}
+--- !u!54 &373506469593414632
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480600397887603688}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1732327694680328014
 GameObject:
   m_ObjectHideFlags: 0

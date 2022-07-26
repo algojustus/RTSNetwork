@@ -10,6 +10,7 @@ public class UnitController : MonoBehaviour
     private List<UnitSelected> selectedUnits;
     private List<BuildingSelected> buildingUnits;
     [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LayerMask resourceMask;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private RectTransform selectionArea;
     private Vector2 selectionStartPos;
@@ -19,6 +20,7 @@ public class UnitController : MonoBehaviour
     private int unitCounter = 0;
     private Vector3 mousePos;
     private GameObject gameMananger;
+    private GameObject clickedResource;
     private ResourcesUI _resources;
     private string currentUnitPrefabname;
     public Slider progressbar;
@@ -244,6 +246,8 @@ public class UnitController : MonoBehaviour
         {
             shufflePosition = ShufflePosition(moveTo);
             units.MoveToPosition(shufflePosition);
+            units.GetComponent<GatheringUnit>().resourceNode =
+                clickedResource.GetComponent<ResourceClicked>().ResourceNode;
         }
 
         ResetShufflePosition();
@@ -302,7 +306,10 @@ public class UnitController : MonoBehaviour
         {
             mousePosition = raycastHit.point;
         }
-
+        if (Physics.Raycast(ray, out RaycastHit raycastHit2, float.MaxValue, resourceMask))
+        {
+            clickedResource = raycastHit2.collider.gameObject;
+        }
         return mousePosition;
     }
 

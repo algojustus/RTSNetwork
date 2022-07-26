@@ -39,6 +39,7 @@ public class BuildingController : MonoBehaviour
             .BuildingCounter();
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
             .AddBuilding(building_id,"tc"+Client.myGameColor,startCord,new Quaternion(),building);
+        GatheringHandler.SetStorage(building);
     }
     public void SetUiOnBuilding(Building building, BuildingSelected buildingSelected)
     {
