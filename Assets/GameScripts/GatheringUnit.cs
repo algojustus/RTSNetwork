@@ -63,7 +63,7 @@ public class GatheringUnit : MonoBehaviour
                            break;
                     }
                     
-                    if (resourceInventoryAmount >= 3)
+                    if (resourceInventoryAmount >= 10)
                     {
                         state = State.MovingToStorage;
                     } else
@@ -90,7 +90,6 @@ public class GatheringUnit : MonoBehaviour
                     if (!resourceNode.HasResources())
                     {
                         //var tempnode = resourceNode;
-                        //Destroy(resourceNode.node.gameObject);
                         _resourceList = GatheringHandler.GetResourceNode(resourceNode.node.GetComponent<ResourceClicked>());
                         GetNextCloseResource();
                     }
@@ -109,9 +108,14 @@ public class GatheringUnit : MonoBehaviour
 
     private void GetNextCloseResource()
     {
-        resourceNode = null;
         if (_resourceList.Count <= 0)
+        {
+            Destroy(resourceNode.node.gameObject);
+            resourceNode = null;
             return;
+        }
+        Destroy(resourceNode.node.gameObject);
+        resourceNode = null;
         resourceNode = _resourceList[0];
         _resourceList.Remove(resourceNode);
     }
