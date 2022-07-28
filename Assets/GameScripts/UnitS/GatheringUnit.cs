@@ -177,14 +177,16 @@ public class GatheringUnit : MonoBehaviour
 
     private void GetNextCloseResource()
     {
-        if (_resourceList.Count <= 0)
-        {
-            Destroy(resourceNode.node.gameObject);
-            resourceNode = null;
-            return;
-        }
-
-        Destroy(resourceNode.node.gameObject);
+        // if (_resourceList.Count <= 0)
+        // {
+        //     GatheringHandler.RemoveResource(resourceNode.node.GetComponent<ResourceClicked>().resourceID);
+        //     resourceNode = null;
+        //     return;
+        // }
+        //
+        // Destroy(resourceNode.node.gameObject);
+        ClientMessages.DestroyResource(Client.myCurrentServer,resourceNode.node.name);
+        GatheringHandler.RemoveResource(resourceNode.node.name);
         resourceNode = null;
         resourceNode = _resourceList[0];
         _resourceList.Remove(resourceNode);

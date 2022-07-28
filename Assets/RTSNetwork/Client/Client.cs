@@ -220,6 +220,7 @@ public class Client : MonoBehaviour
             {(int) ServerPackets.teamsettings, ClientHandler.TeamSettingUpdated},
             {(int) ServerPackets.building, ClientHandler.BuildBuilding},
             {(int) ServerPackets.readycheck, ClientHandler.ReadyCheck},
+            {(int) ServerPackets.destroyresource, ClientHandler.DestroyResource},
         };
     }
 

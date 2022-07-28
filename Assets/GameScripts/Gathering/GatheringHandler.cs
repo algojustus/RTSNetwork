@@ -8,7 +8,8 @@ public class GatheringHandler : MonoBehaviour
 
     private List<ResourceNode> _resourceList;
     private Dictionary<Resourcetype, List<GameObject>> storages;
-
+    private Dictionary<int, GameObject> availableResources;
+    private int resourceCounter = 0;
     public enum Resourcetype
     {
         Gold,
@@ -22,9 +23,39 @@ public class GatheringHandler : MonoBehaviour
         instance = this;
         _resourceList = new List<ResourceNode>();
         storages = new Dictionary<Resourcetype, List<GameObject>>();
+        availableResources = new Dictionary<int, GameObject>();
         InitStoragesDictionary();
     }
 
+    private int InitResource(GameObject resource)
+    {
+        resourceCounter++;
+        availableResources.Add(resourceCounter,resource);
+        return resourceCounter;
+    }
+    public static int ReceiveResourceID(GameObject resource)
+    {
+        return instance.InitResource(resource);
+    }
+    private void DestroyResource(string resource_id)
+    {
+        foreach (var name in availableResources)
+        {
+            if (name.Value.name == resource_id)
+            {
+                GameObject tempresource = availableResources[name.Key];
+                Destroy(tempresource);
+                availableResources.Remove(name.Key);
+                break;
+            }
+        }
+    }
+    
+    public static void RemoveResource(string resource_id)
+    {
+        instance.DestroyResource(resource_id);
+    }
+    
     private void InitStoragesDictionary()
     {
         storages.Add(Resourcetype.Gold, new List<GameObject>());

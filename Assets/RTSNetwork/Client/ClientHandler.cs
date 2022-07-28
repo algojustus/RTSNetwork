@@ -203,4 +203,10 @@ public class ClientHandler
         bool ready = packet.ReadBool();
         Client.lobbyManager.settings.ReadyCheck(player,ready);
     }
+
+    public static void DestroyResource(Packet packet)
+    {
+        string resource_id = packet.ReadString();
+        GatheringHandler.RemoveResource(resource_id);
+    }
 }

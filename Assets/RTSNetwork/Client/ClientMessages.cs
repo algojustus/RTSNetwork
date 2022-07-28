@@ -161,6 +161,15 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+    public static void DestroyResource(int server_id, string id)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.destroyresource))
+        {
+            answer.Write(server_id);
+            answer.Write(id);
+            SendTcpData(answer);
+        }
+    }
 
     private static void SendTcpData(Packet packet)
     {
