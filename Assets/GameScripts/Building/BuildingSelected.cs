@@ -113,6 +113,21 @@ public class BuildingSelected : MonoBehaviour
                     gameObject.SetActive(false);
                     ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, 1, false,true);
                     finishedBuilding.GetComponent<BuildingSelected>().enabled = true;
+                    if (finishedBuilding.name.Contains("stein"))
+                    {
+                        Debug.Log("Added new stein");
+                        GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Stone,finishedBuilding);
+                    } 
+                    if (finishedBuilding.name.Contains("holz"))
+                    {
+                        Debug.Log("Added new holz");
+                        GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Wood,finishedBuilding);
+                    } 
+                    if (finishedBuilding.name.Contains("tc"))
+                    {
+                        Debug.Log("Added new all");
+                        GatheringHandler.AddTCStorages(finishedBuilding);
+                    } 
                     if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
                     {
                         if (resourceUi.villager_max >= resourceUi.villager_cap)

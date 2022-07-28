@@ -1,0 +1,221 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class GatheringUnit : MonoBehaviour
+{
+    [SerializeField] private ParticleSystem particles;
+    private UnitSelected unitControlls;
+    public State state;
+    public State movement;
+    public ResourceNode resourceNode;
+    private Transform storage;
+    private int resourceInventoryAmount = 0;
+    private bool idleGatherer;
+    private Vector3 movepos;
+    public ResourcesUI resourceUi;
+    private List<ResourceNode> _resourceList;
+    private Vector3 tempNodeLoc;
+    public GatheringHandler.Resourcetype resource;
+
+    private void Awake()
+    {
+        unitControlls = gameObject.GetComponent<UnitSelected>();
+        state = State.Idle;
+        resourceUi = GameObject.Find("GameManager").GetComponent<ResourcesUI>();
+        _resourceList = new List<ResourceNode>();
+    }
+
+    public enum State
+    {
+        Idle,
+        MovingToResource,
+        Gathering,
+        MovingToStorage,
+        Movement,
+    }
+
+    void Update()
+    {
+        try
+        {
+            switch (state)
+            {
+                case State.Idle:
+                    if (movement == State.Movement)
+                    {
+                        resourceNode = null;
+                        return;
+                    }
+                    if (resourceNode != null)
+                    {
+                        state = State.MovingToResource;
+                        tempNodeLoc = resourceNode.GetPosition();
+                        resource = resourceNode.node.GetComponent<ResourceClicked>().GetResourceType();
+                        storage = GatheringHandler.GetStorage(resourceNode.node.GetComponent<ResourceClicked>().GetResourceType(),transform);
+                        Debug.Log(storage);
+                    }
+
+                    break;
+                case State.MovingToResource:
+                    
+                    if (movement == State.Movement)
+                    {
+                        resourceNode = null;
+                        return;
+                    }
+                    if (unitControlls.isIdle)
+                    {
+                        if (resourceNode == null)
+                        {
+                            state = State.Idle;
+                            return;
+                        }
+
+                        MoveToResource(
+                            tempNodeLoc,
+                            5f,
+                            () =>
+                            {
+                                state = State.Gathering;
+                            });
+                    }
+
+                    break;
+                case State.Gathering:
+                    if (movement == State.Movement)
+                    {
+                        resourceNode = null;
+                        return;
+                    }
+                    if (unitControlls.isIdle)
+                    {
+                        if (resourceInventoryAmount >= 10 ||!resourceNode.HasResources())
+                        {
+                            state = State.MovingToStorage;
+                        } else
+                        {
+                            StartGatheringEffect(
+                                () =>
+                                {
+                                    resourceInventoryAmount++;
+                                    resourceNode.ReduceResourceCount();
+                                    unitControlls.isIdle = false;
+                                    unitControlls.currentIdleTime = 0;
+                                });
+                        }
+                    }
+
+                    break;
+                case State.MovingToStorage:
+                    if (movement == State.Movement)
+                    {
+                        resourceNode = null;
+                        return;
+                    }
+                    if (unitControlls.isIdle)
+                    {
+                        if (resourceNode == null)
+                        {
+                            state = State.Idle;
+                            return;
+                        }
+
+                        if (!resourceNode.HasResources())
+                        {
+                            if (resourceNode == null)
+                            {
+                                resourceNode = _resourceList[0];
+                                state = State.Idle;
+                                return;
+                            }
+
+                            _resourceList =
+                                GatheringHandler.GetResourceNode(resourceNode.node.GetComponent<ResourceClicked>());
+                            GetNextCloseResource();
+                        }
+
+                        MoveToStorage(
+                            storage.position,
+                            () =>
+                            {
+                                AddCollectedResource(resource);
+                                resourceInventoryAmount = 0;
+                                state = State.Idle;
+                            });
+                    }
+
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            resourceNode = null;
+            state = State.Idle;
+            throw;
+        }
+    }
+
+
+    private void AddCollectedResource(GatheringHandler.Resourcetype resourcetype)
+    {
+        switch (resourcetype)
+        {
+            case GatheringHandler.Resourcetype.Food:
+                resourceUi.AddFood(resourceInventoryAmount);
+                break;
+            case GatheringHandler.Resourcetype.Stone:
+                resourceUi.AddStone(resourceInventoryAmount);
+                break;
+            case GatheringHandler.Resourcetype.Wood:
+                resourceUi.AddWood(resourceInventoryAmount);
+                break;
+            case GatheringHandler.Resourcetype.Gold:
+                resourceUi.AddGold(resourceInventoryAmount);
+                break;
+        }
+    }
+
+    private void GetNextCloseResource()
+    {
+        if (_resourceList.Count <= 0)
+        {
+            Destroy(resourceNode.node.gameObject);
+            resourceNode = null;
+            return;
+        }
+
+        Destroy(resourceNode.node.gameObject);
+        resourceNode = null;
+        resourceNode = _resourceList[0];
+        _resourceList.Remove(resourceNode);
+    }
+
+    private void MoveToResource(Vector3 pos, float stopDistance, Action onArrival)
+    {
+        movepos = pos;
+        movepos.x -= stopDistance;
+        movepos.y -= stopDistance;
+        unitControlls.MoveToPosition(movepos);
+
+        if (movepos.x == transform.position.x && movepos.z == transform.position.z)
+            onArrival.Invoke();
+    }
+
+    private void MoveToStorage(Vector3 pos, Action onArrival)
+    {
+        movepos = pos;
+        unitControlls.MoveToPosition(movepos);
+
+        if (movepos.x == transform.position.x && movepos.z == transform.position.z)
+            onArrival.Invoke();
+    }
+
+    private void StartGatheringEffect(Action onStart)
+    {
+        particles.Play();
+        onStart.Invoke();
+    }
+}

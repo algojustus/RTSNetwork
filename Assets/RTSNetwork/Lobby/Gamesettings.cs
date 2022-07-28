@@ -73,7 +73,6 @@ public class Gamesettings : MonoBehaviour
                 break;
         }
         Client.lobbyManager.CheckifAllReady();
-        Debug.Log(Client.myCurrentServer+" "+Client.clientID+""+_ready);
         ClientMessages.SendReadyCheck(Client.myCurrentServer,Client.clientID,_ready);
     }
     private int CheckForPlayerNr(int player)

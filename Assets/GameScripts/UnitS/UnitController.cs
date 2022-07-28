@@ -246,10 +246,17 @@ public class UnitController : MonoBehaviour
         {
             shufflePosition = ShufflePosition(moveTo);
             units.MoveToPosition(shufflePosition);
-            units.GetComponent<GatheringUnit>().resourceNode =
-                clickedResource.GetComponent<ResourceClicked>().ResourceNode;
+            if (clickedResource != null)
+            {
+                units.GetComponent<GatheringUnit>().resourceNode = 
+                    clickedResource.GetComponent<ResourceClicked>().ResourceNode;
+                units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Idle;
+                clickedResource = null;
+                return;
+            }
+            units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Movement;
+            units.GetComponent<GatheringUnit>().state = GatheringUnit.State.Idle;
         }
-
         ResetShufflePosition();
     }
 

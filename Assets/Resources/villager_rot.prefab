@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 1806116829115501046}
   - component: {fileID: 5937337408045336346}
   - component: {fileID: -1008616659459773770}
+  - component: {fileID: 7864748797174423105}
   m_Layer: 0
   m_Name: villager_rot
   m_TagString: player1_villager
@@ -215,6 +216,7 @@ MonoBehaviour:
   unitData: {fileID: 11400000, guid: c61aa0ec59e8ff04ba76f966d21494c9, type: 2}
   _selectedGameObject: {fileID: 0}
   isIdle: 0
+  currentIdleTime: 0
 --- !u!114 &1806116829115501046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +269,23 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7864748797174423105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5937337408045336349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800b5aa54f20e16498e39f3800f03416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles: {fileID: 4706858968556310423}
+  state: 0
+  movement: 0
+  resourceUi: {fileID: 0}
+  resource: 0
 --- !u!1001 &1064937254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -347,5 +366,10 @@ PrefabInstance:
 --- !u!4 &5510950153312471450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5510950153603428028, guid: 0f705ff0a89cb7e419e9965664f552b3, type: 3}
+  m_PrefabInstance: {fileID: 1064937254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4706858968556310423 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4706858967602604209, guid: 0f705ff0a89cb7e419e9965664f552b3, type: 3}
   m_PrefabInstance: {fileID: 1064937254}
   m_PrefabAsset: {fileID: 0}

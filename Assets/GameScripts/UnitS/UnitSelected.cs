@@ -68,7 +68,7 @@ public class UnitSelected : MonoBehaviour
             return;
         movePos = moveToPos;
         _navMeshAgent.SetDestination(movePos);
-        //_rtsView.SendMoveToPos(movePos);
+        _rtsView.SendMoveToPos(movePos);
         isIdle = false;
     }
     private void StayIdle()
