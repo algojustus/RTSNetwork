@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GatheringHandler : MonoBehaviour
 {
@@ -30,7 +27,6 @@ public class GatheringHandler : MonoBehaviour
 
     private void InitStoragesDictionary()
     {
-        Debug.Log("I woke up");
         storages.Add(Resourcetype.Gold, new List<GameObject>());
         storages.Add(Resourcetype.Stone, new List<GameObject>());
         storages.Add(Resourcetype.Wood, new List<GameObject>());
@@ -64,19 +60,15 @@ public class GatheringHandler : MonoBehaviour
 
     private Transform GetClosestStorage(Resourcetype resourcetype, Transform gatherer)
     {
-        Debug.Log("setting close storage");
         float olddist = 10000f;
         float dist;
         foreach (var kvp in storages)
         {
-            Debug.Log("checking key: " + kvp.Key);
             if (kvp.Key != resourcetype)
                 continue;
-            Debug.Log("found storages: " + kvp.Value.Count);
             foreach (var storage in kvp.Value)
             {
                 dist = Vector3.Distance(gatherer.position, storage.transform.position);
-                Debug.Log("distance to first object " + dist);
                 if (olddist > dist)
                 {
                     olddist = dist;
@@ -89,7 +81,6 @@ public class GatheringHandler : MonoBehaviour
 
     public static Transform GetStorage(Resourcetype resourcetype, Transform gatherer)
     {
-        Debug.Log("getting closest storage");
         return instance.GetClosestStorage(resourcetype, gatherer);
     }
 
@@ -105,7 +96,6 @@ public class GatheringHandler : MonoBehaviour
 
     private void AddTCStorage(GameObject gameObject)
     {
-        Debug.Log(gameObject.name + "Was added");
         storages[Resourcetype.Food].Add(gameObject);
         storages[Resourcetype.Stone].Add(gameObject);
         storages[Resourcetype.Wood].Add(gameObject);

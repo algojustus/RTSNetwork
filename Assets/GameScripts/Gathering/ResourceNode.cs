@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceNode
@@ -24,7 +22,6 @@ public class ResourceNode
    public void ReduceResourceCount()
    {
       resourceCount--;
-      Debug.Log(resourceCount +" left");
    }
 
    public bool HasResources()

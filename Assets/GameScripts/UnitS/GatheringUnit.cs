@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GatheringUnit : MonoBehaviour
 {
@@ -55,7 +53,6 @@ public class GatheringUnit : MonoBehaviour
                         tempNodeLoc = resourceNode.GetPosition();
                         resource = resourceNode.node.GetComponent<ResourceClicked>().GetResourceType();
                         storage = GatheringHandler.GetStorage(resourceNode.node.GetComponent<ResourceClicked>().GetResourceType(),transform);
-                        Debug.Log(storage);
                     }
 
                     break;

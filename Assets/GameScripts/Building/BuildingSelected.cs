@@ -115,17 +115,15 @@ public class BuildingSelected : MonoBehaviour
                     finishedBuilding.GetComponent<BuildingSelected>().enabled = true;
                     if (finishedBuilding.name.Contains("stein"))
                     {
-                        Debug.Log("Added new stein");
                         GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Stone,finishedBuilding);
+                        GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Gold,finishedBuilding);
                     } 
                     if (finishedBuilding.name.Contains("holz"))
                     {
-                        Debug.Log("Added new holz");
                         GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Wood,finishedBuilding);
                     } 
                     if (finishedBuilding.name.Contains("tc"))
                     {
-                        Debug.Log("Added new all");
                         GatheringHandler.AddTCStorages(finishedBuilding);
                     } 
                     if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
