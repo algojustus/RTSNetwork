@@ -62,10 +62,6 @@ public class GatheringHandler : MonoBehaviour
         storages.Add(Resourcetype.Stone, new List<GameObject>());
         storages.Add(Resourcetype.Wood, new List<GameObject>());
         storages.Add(Resourcetype.Food, new List<GameObject>());
-        foreach (var kvp in storages)
-        {
-            Debug.Log(kvp.Key);
-        }
     }
 
     private List<ResourceNode> GetCloseResource(ResourceClicked oldnode)

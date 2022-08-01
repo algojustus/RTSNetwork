@@ -9,13 +9,13 @@ public class Client : MonoBehaviour
     public static Serverlist serverlist;
     public static LobbyManager lobbyManager;
     public static Tcp tcp;
-    private string serverIP = "";
+    [SerializeField] private string serverIP = "";
     public static int clientID = 0;
     public static int otherID = 0;
     public static int myCurrentServer = 0;
     public static string myGameColor;
     private static int dataBufferSize = 2048;
-    public int serverPort;
+    [SerializeField] public int serverPort;
     private static bool isConnected;
     private static bool wasDisconnected;
 

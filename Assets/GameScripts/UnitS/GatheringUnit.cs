@@ -149,6 +149,8 @@ public class GatheringUnit : MonoBehaviour
         }
         catch (Exception e)
         {
+            
+            Debug.Log(e);
             resourceNode = null;
             state = State.Idle;
             throw;

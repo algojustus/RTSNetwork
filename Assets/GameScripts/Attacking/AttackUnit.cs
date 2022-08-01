@@ -101,6 +101,7 @@ public class AttackUnit : MonoBehaviour
         }
         catch (Exception e)
         {
+            Debug.Log(e);
             target = null;
             state = Attack.Idle;
             throw;

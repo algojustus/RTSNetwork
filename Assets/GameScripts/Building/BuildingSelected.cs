@@ -125,12 +125,13 @@ public class BuildingSelected : MonoBehaviour
                     {
                         GatheringHandler.AddStorages(GatheringHandler.Resourcetype.Wood,finishedBuilding);
                     } 
-                    if (finishedBuilding.name.Contains("tc"))
-                    {
-                        GatheringHandler.AddTCStorages(finishedBuilding);
-                    } 
+                    
                     if (finishedBuilding.name.Contains("haus") || finishedBuilding.name.Contains("tc"))
                     {
+                        if (finishedBuilding.name.Contains("tc"))
+                        {
+                            GatheringHandler.AddTCStorages(finishedBuilding);
+                        } 
                         if (resourceUi.villager_max >= resourceUi.villager_cap)
                             return;
                         resourceUi.villager_max += 5;
@@ -141,7 +142,6 @@ public class BuildingSelected : MonoBehaviour
                 finishedBuilding.transform.position += new Vector3(0,20f/buildingData.buildingtime*multiplier,0);
             }
         }
-        //TODO:: new progressbar
     }
 
     public GameObject InitBuildingMultiplayer()

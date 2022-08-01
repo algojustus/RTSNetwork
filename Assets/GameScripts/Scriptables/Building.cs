@@ -12,5 +12,6 @@ public class Building : ScriptableObject
     public int ranged_resistance;
     public int melee_resistance;
     public List<string> spawnables;
+    public List<Sprite> sprites;
     public List<string> technologies;
 }

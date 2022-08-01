@@ -204,7 +204,6 @@ public class UnitController : MonoBehaviour
     }
     public IEnumerator InstantiateBow(BuildingSelected buildingSelected)
     {
-        Debug.Log("Bow init");
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(10));
@@ -345,7 +344,7 @@ public class UnitController : MonoBehaviour
 
     private void DrawSelectionBox()
     {
-        bool selectBuildings = true;
+        //bool selectBuildings = true;
         Vector3 mouseReleased = CheckWhereMouseClicked();
         Vector3 scale = leftClickPosition - mouseReleased;
         scale.x = Mathf.Abs(scale.x);

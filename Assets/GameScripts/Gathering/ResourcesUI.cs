@@ -15,7 +15,7 @@ public class ResourcesUI : MonoBehaviour
     private int stone = 1250;
     public int villager_max = 5;
     public int villager_count = 0;
-    public int villager_cap;
+    public int villager_cap = 123;
 
     private void Start()
     {
@@ -35,6 +35,8 @@ public class ResourcesUI : MonoBehaviour
         stone_ui.text = "" + stone;
         villager_ui.text = villager_count + " | " + villager_max;
         villager_cap = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_villagers;
+        if (villager_cap <= 0)
+            villager_cap = 100;
     }
 
     public bool HasEnoughResources(int _food, int _wood, int _gold, int _stone)

@@ -29,7 +29,7 @@ public class BuildingController : MonoBehaviour
         if(Client.myGameColor == "_blau")
             startCord = new Vector3(-111,0,-12.5f);
         if(Client.myGameColor == "_rot")
-            startCord = new Vector3(-5,0,-14);
+            startCord = new Vector3(120,0,-12.5f);
 
         cameraStartPos.transform.position = new Vector3(startCord.x,cameraStartPos.transform.position.y,startCord.z);
         GameObject building = Instantiate(Resources.Load("tc"+Client.myGameColor),startCord,new Quaternion()) as GameObject;
@@ -44,11 +44,12 @@ public class BuildingController : MonoBehaviour
     public void SetUiOnBuilding(Building building, BuildingSelected buildingSelected)
     {
         int unitCount = 1;
-        int technologyCount = 1;
+        //int technologyCount = 1;
         foreach (var units in building.spawnables)
         {
             var unit = buildings.transform.GetChild(0).Find("Unit" + unitCount);
             unit.gameObject.AddComponent<Button>();
+            unit.GetComponent<Image>().sprite = building.sprites[unitCount - 1];
             unit.gameObject.SetActive(true);
             if(units == "villager")
                 unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitVillager(buildingSelected);});
@@ -60,21 +61,21 @@ public class BuildingController : MonoBehaviour
                 unit.GetComponent<Button>().onClick.AddListener(delegate { _unitController.InitBow(buildingSelected);});
             unitCount++;
         }
-        foreach (var units in building.technologies)
-        {
-            // var tech = buildings.transform.GetChild(0).Find("Unit" + unitCount);
-            // tech.gameObject.SetActive(true);
-            //Add techs later
-            technologyCount++;
-        }
-
-        unitCount = 1;
-        technologyCount = 1;
+        // foreach (var units in building.technologies)
+        // {
+        //     // var tech = buildings.transform.GetChild(0).Find("Unit" + unitCount);
+        //     // tech.gameObject.SetActive(true);
+        //     //Add techs later
+        //     technologyCount++;
+        // }
+        //
+        // unitCount = 1;
+        // technologyCount = 1;
     }
     public void ResetBuildingUI(Building building, BuildingSelected buildingSelected)
     {
         int unitCount = 1;
-        int technologyCount = 1;
+        //int technologyCount = 1;
         foreach (var units in building.spawnables)
         {
             var unit = buildings.transform.GetChild(0).Find("Unit" + unitCount);
@@ -90,7 +91,7 @@ public class BuildingController : MonoBehaviour
         }
 
         unitCount = 1;
-        technologyCount = 1;
+        //technologyCount = 1;
     }
     
     private void Update()
