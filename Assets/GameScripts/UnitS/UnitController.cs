@@ -11,6 +11,7 @@ public class UnitController : MonoBehaviour
     private List<BuildingSelected> buildingUnits;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private LayerMask resourceMask;
+    [SerializeField] private LayerMask enemyMask;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private RectTransform selectionArea;
     private Vector2 selectionStartPos;
@@ -21,6 +22,7 @@ public class UnitController : MonoBehaviour
     private Vector3 mousePos;
     private GameObject gameMananger;
     private GameObject clickedResource;
+    private GameObject attackTarget;
     private ResourcesUI _resources;
     private string currentUnitPrefabname;
     public Slider progressbar;
@@ -73,7 +75,6 @@ public class UnitController : MonoBehaviour
         progressbar.gameObject.SetActive(false);
         progressbar.value = 0;
     }
-
     public void InitVillager(BuildingSelected buildingSelected)
     {
         StartCoroutine(InstantiateVillager(buildingSelected));
@@ -203,6 +204,7 @@ public class UnitController : MonoBehaviour
     }
     public IEnumerator InstantiateBow(BuildingSelected buildingSelected)
     {
+        Debug.Log("Bow init");
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(10));
@@ -244,18 +246,35 @@ public class UnitController : MonoBehaviour
         Vector3 shufflePosition = moveTo;
         foreach (var units in selectedUnits)
         {
-            shufflePosition = ShufflePosition(moveTo);
-            units.MoveToPosition(shufflePosition);
-            if (clickedResource != null)
+            if(units.CompareTag("player1_villager"))
             {
-                units.GetComponent<GatheringUnit>().resourceNode = 
-                    clickedResource.GetComponent<ResourceClicked>().ResourceNode;
-                units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Idle;
-                clickedResource = null;
-                return;
+                shufflePosition = ShufflePosition(moveTo);
+                units.MoveToPosition(shufflePosition);
+                if (clickedResource != null)
+                {
+                    units.GetComponent<GatheringUnit>().resourceNode = 
+                        clickedResource.GetComponent<ResourceClicked>().ResourceNode;
+                    units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Idle;
+                    clickedResource = null;
+                    return;
+                }
+                units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Movement;
+                units.GetComponent<GatheringUnit>().state = GatheringUnit.State.Idle;
+            } 
+            if(units.CompareTag("Player1"))
+            {
+                shufflePosition = ShufflePosition(moveTo);
+                units.MoveToPosition(shufflePosition);
+                if (attackTarget != null)
+                {
+                    units.GetComponent<AttackUnit>().target = attackTarget;
+                    units.GetComponent<AttackUnit>().movement = AttackUnit.Attack.Idle;
+                    attackTarget = null;
+                    return;
+                }
+                units.GetComponent<AttackUnit>().movement = AttackUnit.Attack.Movement;
+                units.GetComponent<AttackUnit>().state = AttackUnit.Attack.Idle;
             }
-            units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Movement;
-            units.GetComponent<GatheringUnit>().state = GatheringUnit.State.Idle;
         }
         ResetShufflePosition();
     }
@@ -316,6 +335,10 @@ public class UnitController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit raycastHit2, float.MaxValue, resourceMask))
         {
             clickedResource = raycastHit2.collider.gameObject;
+        }
+        if (Physics.Raycast(ray, out RaycastHit raycastHit3, float.MaxValue, enemyMask))
+        {
+            attackTarget = raycastHit3.collider.gameObject;
         }
         return mousePosition;
     }

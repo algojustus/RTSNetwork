@@ -92,6 +92,7 @@ public class ClientHandler
         UnitData unit = new UnitData(unit_id, prefab_name,pos,rot);
         unit.SpawnIngameUnit();
         unit.unit.transform.tag = "Player2";
+        unit.unit.layer = 8; // 8 = enemy
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].UnitDictionary
             .Add(unit_id, unit);
     }
@@ -106,6 +107,7 @@ public class ClientHandler
         BuildingData building = new BuildingData(unit_id, prefab_name,pos,rot);
         building.SpawnIngameBuilding();
         building.building.transform.tag = "Player2";
+        building.building.layer = 8; // 8 = enemy
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].BuildingDictionary
             .Add(unit_id, building);
     }
@@ -178,16 +180,18 @@ public class ClientHandler
                 .BuildingDictionary[building_id].building;
             select = currentbuilding.GetComponent<BuildingSelected>();
             select.finishedBuilding = select.InitBuildingMultiplayer();
-            
             return;
         }
 
         if (finished)
             return;
+        
         currentbuilding = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[player]
             .BuildingDictionary[building_id].building;
         select = currentbuilding.GetComponent<BuildingSelected>();
         select.buildinghp += 1 *multiplier;
+        select.progress = select.transform.Find("Progress").GetComponent<TextMesh>();
+        select.progress.text = select.buildinghp + "|" + select.buildingData.buildingtime;
         select.finishedBuilding.transform.position += new Vector3(0,20f/select.buildingData.buildingtime*multiplier,0);
         if (select.buildinghp >= select.buildingData.buildingtime)
         {

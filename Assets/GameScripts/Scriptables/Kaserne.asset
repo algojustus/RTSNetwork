@@ -20,8 +20,6 @@ MonoBehaviour:
   ranged_resistance: 5
   melee_resistance: 3
   spawnables:
-  - spear
-  - sword
   - bow
   technologies:
   - Training

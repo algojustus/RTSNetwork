@@ -6674,6 +6674,9 @@ MonoBehaviour:
   resourceMask:
     serializedVersion: 2
     m_Bits: 128
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
   mainCamera: {fileID: 1690142618}
   selectionArea: {fileID: 1615526314}
   progressbar: {fileID: 2091133205}

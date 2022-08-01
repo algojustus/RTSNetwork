@@ -18,6 +18,7 @@ public class BuildingSelected : MonoBehaviour
     public Vector3 buildinglocation;
     public GameObject finishedBuilding;
     public ResourcesUI resourceUi;
+    public TextMesh progress;
     public int building_id;
 
     void Awake()
@@ -91,6 +92,7 @@ public class BuildingSelected : MonoBehaviour
         if (!buildStarted)
         {
             buildinglocation.y -= 20;
+            progress = transform.Find("Progress").GetComponent<TextMesh>();
             finishedBuilding = Instantiate(finishedBuilding,buildinglocation,new Quaternion());
             finishedBuilding.GetComponent<BuildingSelected>().enabled = false;
             buildStarted = true;
@@ -106,6 +108,7 @@ public class BuildingSelected : MonoBehaviour
                 ClientMessages.BuildingInit(Client.myCurrentServer, Client.otherID,building_id, multiplier, false,false);
                 secondsDone++;
                 buildinghp += 1 *multiplier;
+                progress.text = buildinghp + " | " + buildingData.buildingtime;
                 if (buildinghp >= buildingData.buildingtime)
                 {
                     int leftover = buildingData.buildingtime - buildinghp;

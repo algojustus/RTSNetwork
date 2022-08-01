@@ -3901,7 +3901,7 @@ GameObject:
   - component: {fileID: 8168264714261881090}
   m_Layer: 0
   m_Name: kaserne_blau
-  m_TagString: Untagged
+  m_TagString: player1_kaserne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

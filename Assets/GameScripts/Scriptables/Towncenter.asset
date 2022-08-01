@@ -21,6 +21,7 @@ MonoBehaviour:
   melee_resistance: 5
   spawnables:
   - villager
+  - bow
   technologies:
   - Loom
   - Vision
