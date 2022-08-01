@@ -12,6 +12,8 @@ public class AttackUnit : MonoBehaviour
     public GameObject target;
     public float maxRange = 25f;
     public ResourcesUI resourceUi;
+    public bool isAllowedtoAttack;
+    public bool currentlyCharing;
     private Vector3 movepos;
 
     public enum Attack
@@ -108,14 +110,9 @@ public class AttackUnit : MonoBehaviour
         }
     }
 
-    private void StartFightingEffect(Action onStart)
+    private void StartFightingEffect()
     {
         particles.Play();
-        onStart.Invoke();
-    }
-
-    private void GetNextCloseEnemy()
-    {
     }
 
     private void MoveToEnemy(Transform pos, Action onArrival)
@@ -127,6 +124,30 @@ public class AttackUnit : MonoBehaviour
 
     private void AttackTarget()
     {
-        Debug.Log("attack move");
+        if (!isAllowedtoAttack && !currentlyCharing)
+        {
+            StartCoroutine(AttackCooldown());
+            StartFightingEffect();
+            return;
+        }
+
+        if (isAllowedtoAttack)
+        {
+            ShootProjectile();
+        }
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        currentlyCharing = true;
+        yield return new WaitForSeconds(2);
+        isAllowedtoAttack = true;
+    }
+    private void ShootProjectile()
+    {
+        GameObject arrow = Instantiate(Resources.Load("Arrow"), transform.position+transform.forward, new Quaternion()) as GameObject;
+        arrow.GetComponent<Arrow>().ShootArrowOn(target);
+        currentlyCharing = false;
+        isAllowedtoAttack = false;
     }
 }
