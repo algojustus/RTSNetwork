@@ -10,6 +10,7 @@ public class UnitData
     public Quaternion rotation;
     public int movementSpeed;
     public int unit_hp;
+    public int current_hp;
     public int level;
     public int damage;
     public int ranged_resistance;
@@ -30,6 +31,7 @@ public class UnitData
         position = _spawnposition;
         rotation = _spawnrota;
         unit_hp = hitpoints;
+        current_hp = unit_hp;
         level = 1;
         damage = _damage;
         ranged_resistance = rangedResistance;
@@ -42,6 +44,7 @@ public class UnitData
         prefabname = _prefabName;
         position = spawnposition;
         rotation = spawnrota;
+        current_hp = unit_hp;
     }
 
     public void SpawnIngameUnit()
@@ -52,6 +55,7 @@ public class UnitData
         unit_hp = scriptableObject.unit_hp;
         level = 1;
         damage = scriptableObject.damage;
+        current_hp = scriptableObject.unit_hp;
         ranged_resistance = scriptableObject.ranged_resistance;
         melee_resistance = scriptableObject.melee_resistance;
     }

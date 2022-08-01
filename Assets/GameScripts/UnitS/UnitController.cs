@@ -26,7 +26,7 @@ public class UnitController : MonoBehaviour
     private ResourcesUI _resources;
     private string currentUnitPrefabname;
     public Slider progressbar;
-    
+    [SerializeField] private Canvas unitCanvas;
     void Awake()
     {
         gameMananger = GameObject.Find("GameManager");
@@ -369,6 +369,17 @@ public class UnitController : MonoBehaviour
                 }
             }
 
+            if (collider.transform.CompareTag("Player1") && selectedUnits.Count == 1)
+            {
+                unitCanvas.transform.Find("Slider/Attack/Damage").GetComponent<Text>().text = ""+selectedUnits[0].unitData.damage;
+                unitCanvas.transform.Find("Slider/UnitIcon/Hitpoints").GetComponent<Text>().text = 
+                    Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                        .UnitDictionary[selectedUnits[0].GetComponent<RTSView>().unit_id].current_hp +"|"+selectedUnits[0].unitData.unit_hp;
+                unitCanvas.transform.Find("Slider/Armor/Shield").GetComponent<Text>().text =
+                    selectedUnits[0].unitData.melee_resistance + "|" +selectedUnits[0].unitData.ranged_resistance;
+                unitCanvas.transform.Find("Slider/UnitName").GetComponent<Text>().text = ""+selectedUnits[0].unitData.prefabname;
+                unitCanvas.gameObject.SetActive(true);
+            }
             if (collider.transform.CompareTag("player1_kaserne"))
             {
                 BuildingSelected building = collider.collider.GetComponent<BuildingSelected>();
@@ -407,6 +418,10 @@ public class UnitController : MonoBehaviour
             if (units.transform.CompareTag("player1_villager"))
             {
                 gameMananger.GetComponent<BuildingController>().villagerClicked.gameObject.SetActive(false);
+            }
+            if (units.transform.CompareTag("Player1"))
+            {
+                unitCanvas.gameObject.SetActive(false);
             }
             units.SetSelectedVisible(false);
         }

@@ -5146,6 +5146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b6699165e7d4c47a18e1b077bda6fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIP: 
   serverPort: 0
 --- !u!222 &347571894
 CanvasRenderer:
@@ -6680,6 +6681,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1690142618}
   selectionArea: {fileID: 1615526314}
   progressbar: {fileID: 2091133205}
+  unitCanvas: {fileID: 1678133956}
 --- !u!114 &469165877
 MonoBehaviour:
   m_ObjectHideFlags: 0

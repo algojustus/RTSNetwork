@@ -16,6 +16,7 @@ public class UnitSelected : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     public float currentIdleTime=0;
     private Transform oldTransform;
+    
     void Awake()
     {
         _selectedGameObject = transform.Find("Selected").gameObject;
