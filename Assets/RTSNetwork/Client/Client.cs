@@ -47,6 +47,7 @@ public class Client : MonoBehaviour
             wasDisconnected = false;
         }
     }
+
     private void OnApplicationQuit()
     {
         Disconnect();

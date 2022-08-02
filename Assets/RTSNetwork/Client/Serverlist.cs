@@ -5,7 +5,7 @@ public class Serverlist
 {
     public Dictionary<int, Serverlist> ServerlistDictionary;
     public Dictionary<int, PlayerData> PlayerDictionary;
-    
+
     public int player1_id;
     public int player2_id;
     public int player3_id;
@@ -25,7 +25,7 @@ public class Serverlist
     public int start_resources;
     public int max_players;
     public int start_villagers = 5;
-    
+
 
     public Serverlist(int creator_id, string creator_name, string _server_name)
     {
@@ -55,6 +55,7 @@ public class Serverlist
             ServerlistDictionary.Add(creator_id, server);
             return;
         }
+
         ServerlistDictionary.Remove(creator_id);
         ServerlistDictionary.Add(creator_id, server);
     }
@@ -71,7 +72,7 @@ public class Serverlist
     {
         foreach (var kvp in ServerlistDictionary)
         {
-            Debug.Log("Server_ID = "+kvp.Key);
+            Debug.Log("Server_ID = " + kvp.Key);
         }
     }
 
@@ -80,8 +81,8 @@ public class Serverlist
         var server = ServerlistDictionary[Client.myCurrentServer];
         currently_ingame = true;
         server.PlayerDictionary = new Dictionary<int, PlayerData>();
-        server.PlayerDictionary.Add(1, new PlayerData(server.player1_id,server.player1_name,"_blau"));
-        server.PlayerDictionary.Add(2, new PlayerData(server.player2_id,server.player2_name,"_rot"));
+        server.PlayerDictionary.Add(1, new PlayerData(server.player1_id, server.player1_name, "_blau"));
+        server.PlayerDictionary.Add(2, new PlayerData(server.player2_id, server.player2_name, "_rot"));
     }
 
     public void ClearBuffers()

@@ -7,7 +7,7 @@ public class ClientHandler
         string msg = welcomeMessage.ReadString();
         int myId = welcomeMessage.ReadInt();
         Client.clientID = myId;
-        Client.lobbyManager.playerui_id.text = "Player ID: " +myId; 
+        Client.lobbyManager.playerui_id.text = "Player ID: " + myId;
         Client.lobbyManager.connectionText.text = "Connected";
         Client.lobbyManager.connectionStatus.color = Color.green;
         Debug.Log(msg);
@@ -90,7 +90,7 @@ public class ClientHandler
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();
         Quaternion rot = packet.ReadQuaternion();
-        UnitData unit = new UnitData(unit_id, prefab_name,pos,rot);
+        UnitData unit = new UnitData(unit_id, prefab_name, pos, rot);
         unit.SpawnIngameUnit();
         unit.unit.transform.tag = "Player2";
         unit.unit.layer = 8; // 8 = enemy
@@ -106,23 +106,26 @@ public class ClientHandler
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();
         Quaternion rot = packet.ReadQuaternion();
-        BuildingData building = new BuildingData(unit_id, prefab_name,pos,rot);
+        BuildingData building = new BuildingData(unit_id, prefab_name, pos, rot);
         building.SpawnIngameBuilding();
         building.building.transform.tag = "Player2";
         building.building.layer = 8; // 8 = enemy
-        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].BuildingDictionary
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID]
+            .BuildingDictionary
             .Add(unit_id, building);
     }
-    
+
     public static void UnitPosUpdated(Packet packet)
     {
         int unit_id = packet.ReadInt();
         Vector3 pos = packet.ReadVector3();
-        UnitData unit_pos = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID]
+        UnitData unit_pos = Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+            .PlayerDictionary[Client.otherID]
             .UnitDictionary[unit_id];
         unit_pos.currentlyMovingToPos = pos;
         unit_pos.MoveTo();
     }
+
     public static void SettingsUpdated(Packet packet)
     {
         Gamesettings gamesettings = Client.lobbyManager.settings;
@@ -134,46 +137,52 @@ public class ClientHandler
         gamesettings.villagers.text = "" + villagers;
         gamesettings.startResources = startResources;
         gamesettings.maxVillager = villagers;
-        
+
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_villagers = villagers;
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].max_players = players;
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].start_resources = startResources;
-        
+
         if (gamesettings.maxPlayers < players)
         {
             gamesettings.isAllowedToSend = false;
             gamesettings.IncreasePlayers();
             return;
         }
+
         if (gamesettings.maxPlayers > players)
         {
             gamesettings.isAllowedToSend = false;
             gamesettings.DecreasePlayers();
         }
     }
+
     public static void TeamSettingUpdated(Packet packet)
     {
         Client.lobbyManager.settings.isAllowedToSend = false;
         switch (packet.ReadInt())
         {
-            case 1: Client.lobbyManager.settings.TeamColorPlayer1();
+            case 1:
+                Client.lobbyManager.settings.TeamColorPlayer1();
                 break;
-            case 2: Client.lobbyManager.settings.TeamColorPlayer2();
+            case 2:
+                Client.lobbyManager.settings.TeamColorPlayer2();
                 break;
-            case 3: Client.lobbyManager.settings.TeamColorPlayer3();
+            case 3:
+                Client.lobbyManager.settings.TeamColorPlayer3();
                 break;
-            case 4: Client.lobbyManager.settings.TeamColorPlayer4();
+            case 4:
+                Client.lobbyManager.settings.TeamColorPlayer4();
                 break;
         }
     }
-    
+
     public static void BuildBuilding(Packet packet)
     {
         int player = packet.ReadInt();
         int building_id = packet.ReadInt();
         int multiplier = packet.ReadInt();
-        bool initialized = packet.ReadBool() ;
-        bool finished =  packet.ReadBool();
+        bool initialized = packet.ReadBool();
+        bool finished = packet.ReadBool();
         GameObject currentbuilding = null;
         BuildingSelected select = null;
         if (initialized)
@@ -187,14 +196,17 @@ public class ClientHandler
 
         if (finished)
             return;
-        
+
         currentbuilding = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[player]
             .BuildingDictionary[building_id].building;
         select = currentbuilding.GetComponent<BuildingSelected>();
-        select.buildinghp += 1 *multiplier;
+        select.buildinghp += 1 * multiplier;
         select.progress = select.transform.Find("Progress").GetComponent<TextMesh>();
         select.progress.text = select.buildinghp + "|" + select.buildingData.buildingtime;
-        select.finishedBuilding.transform.position += new Vector3(0,20f/select.buildingData.buildingtime*multiplier,0);
+        select.finishedBuilding.transform.position += new Vector3(
+            0,
+            20f / select.buildingData.buildingtime * multiplier,
+            0);
         if (select.buildinghp >= select.buildingData.buildingtime)
         {
             currentbuilding.SetActive(false);
@@ -207,7 +219,7 @@ public class ClientHandler
     {
         int player = packet.ReadInt();
         bool ready = packet.ReadBool();
-        Client.lobbyManager.settings.ReadyCheck(player,ready);
+        Client.lobbyManager.settings.ReadyCheck(player, ready);
     }
 
     public static void DestroyResource(Packet packet)
@@ -230,9 +242,14 @@ public class ClientHandler
         if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
                 .PlayerDictionary[Client.clientID].UnitDictionary[targetid].current_hp <= 0)
             return;
-        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", attacker.transform.position+attacker.transform.forward, new Quaternion());
+        GameObject arrow = ObjectSpawner.SpawnObject(
+            "Arrow",
+            attacker.transform.position + attacker.transform.forward,
+            new Quaternion());
         arrow.GetComponent<Arrow>().fromEnemy = true;
-        arrow.GetComponent<Arrow>().ShootArrowOn(target,Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
-            .PlayerDictionary[Client.otherID].UnitDictionary[shooterid].damage);
+        arrow.GetComponent<Arrow>().ShootArrowOn(
+            target,
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+                .PlayerDictionary[Client.otherID].UnitDictionary[shooterid].damage);
     }
 }

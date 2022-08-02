@@ -30,6 +30,7 @@ public class LobbyManager : MonoBehaviour
     public Text connectionText;
     public Text playerui_id;
     public Image connectionStatus;
+
     private void Awake()
     {
         if (instance == null)
@@ -121,6 +122,7 @@ public class LobbyManager : MonoBehaviour
     {
         Client.myGameColor = "_blue";
     }
+
     public void InitGame()
     {
         SceneManager.LoadScene("Playground");
@@ -141,7 +143,8 @@ public class LobbyManager : MonoBehaviour
         Client.myCurrentServer = lobby_id;
         Client.otherID = lobby_id;
         Client.myGameColor = "_rot";
-        Client.serverlist.ServerlistDictionary[lobby_id].player2_id = Client.clientID; //provisorisch und muss später über dynamische player ausgabe gemacht werden
+        Client.serverlist.ServerlistDictionary[lobby_id].player2_id =
+            Client.clientID; //provisorisch und muss später über dynamische player ausgabe gemacht werden
         player1lobbyName.text = Client.serverlist.ServerlistDictionary[lobby_id].player1_name;
         player2lobbyName.text = localplayer_name;
         InitNextUIElement(LobbyRoom.gameObject);
@@ -156,15 +159,16 @@ public class LobbyManager : MonoBehaviour
     public void CheckifAllReady()
     {
         bool player1, player2, player3, player4;
-        player1  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_id > 0; 
-        player2  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_id > 0; 
-        player3  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player3_id > 0; 
-        player4  = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player4_id > 0; 
-        CheckForPlayers(player1,player2,player3,player4);
+        player1 = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_id > 0;
+        player2 = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_id > 0;
+        player3 = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player3_id > 0;
+        player4 = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player4_id > 0;
+        CheckForPlayers(player1, player2, player3, player4);
     }
-    public void CheckForPlayers(bool p1,bool p2, bool p3, bool p4)
+
+    public void CheckForPlayers(bool p1, bool p2, bool p3, bool p4)
     {
-        bool p1ready,p2ready,p3ready,p4ready;
+        bool p1ready, p2ready, p3ready, p4ready;
         p1ready = !p1 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player1_readycheck;
         p2ready = !p2 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player2_readycheck;
         p3ready = !p3 || Client.serverlist.ServerlistDictionary[Client.myCurrentServer].player3_readycheck;
@@ -172,11 +176,12 @@ public class LobbyManager : MonoBehaviour
 
         if (Client.myCurrentServer != Client.clientID)
             return;
-        if(p1ready && p2ready && p3ready && p4ready)
+        if (p1ready && p2ready && p3ready && p4ready)
             startButton.interactable = true;
         else
             startButton.interactable = false;
     }
+
     public void PlayerLeftMatch()
     {
         var server = Client.serverlist.ServerlistDictionary[Client.clientID];

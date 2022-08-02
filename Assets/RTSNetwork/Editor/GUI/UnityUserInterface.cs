@@ -18,10 +18,10 @@ namespace RTSNetwork.Editor.GUI
         private static void CreateGameObject()
         {
             GameObject connector = new GameObject("RTSConnector");
-            connector.AddComponent<Client>(); 
-            connector.AddComponent<RTSCommunicator>(); 
+            connector.AddComponent<Client>();
+            connector.AddComponent<RTSCommunicator>();
             connector.AddComponent<ObjectSpawner>();
-            connector.AddComponent<ThreadManager>(); 
+            connector.AddComponent<ThreadManager>();
             Debug.Log("Creating connection GameObject...");
         }
     }

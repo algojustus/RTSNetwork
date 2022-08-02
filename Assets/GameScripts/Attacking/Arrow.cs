@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,10 +5,10 @@ public class Arrow : MonoBehaviour
 {
     public NavMeshAgent navmeshagent;
     public Transform targetPos;
+    public UnitController uiController;
     public bool fromEnemy;
     public int damage;
-    public UnitController uiController;
-    
+
     private void Awake()
     {
         navmeshagent = transform.GetComponent<NavMeshAgent>();
@@ -39,10 +38,10 @@ public class Arrow : MonoBehaviour
             if (!other.transform.CompareTag("Player2"))
                 return;
         }
-        
+
         int hitUnitID = other.GetComponent<RTSView>().unit_id;
         int leftoverhp;
-        if(fromEnemy)
+        if (fromEnemy)
             leftoverhp = Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
                 .PlayerDictionary[Client.clientID].UnitDictionary[hitUnitID].current_hp -= damage;
         else

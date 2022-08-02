@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RTSView : MonoBehaviour
@@ -26,15 +23,15 @@ public class RTSView : MonoBehaviour
         position = syncedObject.transform.position;
         rotation = syncedObject.transform.rotation;
         scale = syncedObject.transform.localScale;
-        if(!transform.CompareTag("Player2"))
+        if (!transform.CompareTag("Player2"))
             unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-            .unitcounter;
-        //Später vlt aus der Unit rausladen, den Prefab namen
+                .unitcounter;
     }
 
     public void FixedUpdate()
     {
-        if (currentlySyncing && (syncedObject.transform.CompareTag("Player1") || syncedObject.transform.CompareTag("player1_villager")))
+        if (currentlySyncing && (syncedObject.transform.CompareTag("Player1") ||
+                                 syncedObject.transform.CompareTag("player1_villager")))
             SendSyncToView();
     }
 
@@ -42,6 +39,7 @@ public class RTSView : MonoBehaviour
     {
         //_rtsCommunicator.TransferSyncedObjects(unit_id, syncedObject);
     }
+
     public void SendMoveToPos(Vector3 moveTo)
     {
         if (syncedObject.transform.CompareTag("Player1") || syncedObject.transform.CompareTag("player1_villager"))
@@ -49,6 +47,7 @@ public class RTSView : MonoBehaviour
             _rtsCommunicator.TransferMoveToPos(unit_id, moveTo);
         }
     }
+
     public void EnableView()
     {
         currentlySyncing = true;

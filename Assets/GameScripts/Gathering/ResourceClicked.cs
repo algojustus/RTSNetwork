@@ -6,11 +6,12 @@ public class ResourceClicked : MonoBehaviour
     public int ResourceAmount = 3;
     public GatheringHandler.Resourcetype resourceType;
     public int resourceID;
-    
+
     public GatheringHandler.Resourcetype GetResourceType()
     {
         return resourceType;
     }
+
     private void Awake()
     {
         ResourceNode = new ResourceNode(transform, ResourceAmount);

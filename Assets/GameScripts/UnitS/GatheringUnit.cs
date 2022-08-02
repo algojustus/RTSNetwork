@@ -5,18 +5,18 @@ using UnityEngine;
 public class GatheringUnit : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particles;
+    private List<ResourceNode> _resourceList;
     private UnitSelected unitControlls;
+    public GatheringHandler.Resourcetype resource;
+    public ResourceNode resourceNode;
+    public ResourcesUI resourceUi;
+    private Transform storage;
     public State state;
     public State movement;
-    public ResourceNode resourceNode;
-    private Transform storage;
+    private Vector3 movepos;
+    private Vector3 tempNodeLoc;
     private int resourceInventoryAmount = 0;
     private bool idleGatherer;
-    private Vector3 movepos;
-    public ResourcesUI resourceUi;
-    private List<ResourceNode> _resourceList;
-    private Vector3 tempNodeLoc;
-    public GatheringHandler.Resourcetype resource;
 
     private void Awake()
     {
@@ -47,22 +47,26 @@ public class GatheringUnit : MonoBehaviour
                         resourceNode = null;
                         return;
                     }
+
                     if (resourceNode != null)
                     {
                         state = State.MovingToResource;
                         tempNodeLoc = resourceNode.GetPosition();
                         resource = resourceNode.node.GetComponent<ResourceClicked>().GetResourceType();
-                        storage = GatheringHandler.GetStorage(resourceNode.node.GetComponent<ResourceClicked>().GetResourceType(),transform);
+                        storage = GatheringHandler.GetStorage(
+                            resourceNode.node.GetComponent<ResourceClicked>().GetResourceType(),
+                            transform);
                     }
 
                     break;
                 case State.MovingToResource:
-                    
+
                     if (movement == State.Movement)
                     {
                         resourceNode = null;
                         return;
                     }
+
                     if (unitControlls.isIdle)
                     {
                         if (resourceNode == null)
@@ -87,9 +91,10 @@ public class GatheringUnit : MonoBehaviour
                         resourceNode = null;
                         return;
                     }
+
                     if (unitControlls.isIdle)
                     {
-                        if (resourceInventoryAmount >= 10 ||!resourceNode.HasResources())
+                        if (resourceInventoryAmount >= 10 || !resourceNode.HasResources())
                         {
                             state = State.MovingToStorage;
                         } else
@@ -112,6 +117,7 @@ public class GatheringUnit : MonoBehaviour
                         resourceNode = null;
                         return;
                     }
+
                     if (unitControlls.isIdle)
                     {
                         if (resourceNode == null)
@@ -149,7 +155,6 @@ public class GatheringUnit : MonoBehaviour
         }
         catch (Exception e)
         {
-            
             Debug.Log(e);
             resourceNode = null;
             state = State.Idle;
@@ -179,15 +184,7 @@ public class GatheringUnit : MonoBehaviour
 
     private void GetNextCloseResource()
     {
-        // if (_resourceList.Count <= 0)
-        // {
-        //     GatheringHandler.RemoveResource(resourceNode.node.GetComponent<ResourceClicked>().resourceID);
-        //     resourceNode = null;
-        //     return;
-        // }
-        //
-        // Destroy(resourceNode.node.gameObject);
-        ClientMessages.DestroyResource(Client.myCurrentServer,resourceNode.node.name);
+        ClientMessages.DestroyResource(Client.myCurrentServer, resourceNode.node.name);
         GatheringHandler.RemoveResource(resourceNode.node.name);
         resourceNode = null;
         resourceNode = _resourceList[0];

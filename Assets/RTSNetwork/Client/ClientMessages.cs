@@ -31,7 +31,7 @@ public class ClientMessages : MonoBehaviour
         }
     }
 
-    public static void JoinLobby(int creator_id,string player_name)
+    public static void JoinLobby(int creator_id, string player_name)
     {
         using (Packet answer = new Packet((int) ClientPackets.playerJoined))
         {
@@ -66,8 +66,17 @@ public class ClientMessages : MonoBehaviour
         }
     }
 
-    public static void BroadCastUnitCreation(int unitID, string prefab_name, int targetserver,
-        int receiver_id, Vector3 pos, Quaternion rota, int hp, int damage, int melee_armor, int ranged_armor)
+    public static void BroadCastUnitCreation(
+        int unitID,
+        string prefab_name,
+        int targetserver,
+        int receiver_id,
+        Vector3 pos,
+        Quaternion rota,
+        int hp,
+        int damage,
+        int melee_armor,
+        int ranged_armor)
     {
         using (Packet answer = new Packet((int) ClientPackets.playerSpawn))
         {
@@ -84,8 +93,15 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
-    public static void BroadCastBuildingCreation(int building_id, int targetserver,
-        int receiver_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, BuildingData data)
+
+    public static void BroadCastBuildingCreation(
+        int building_id,
+        int targetserver,
+        int receiver_id,
+        string prefab_name,
+        Vector3 spawnpos,
+        Quaternion spawnrota,
+        BuildingData data)
     {
         using (Packet answer = new Packet((int) ClientPackets.spawnBuilding))
         {
@@ -102,9 +118,9 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
-    
 
-    public static void BroadCastUnitPosition(int unitID, int targetserver,int receiver_id, Vector3 pos)
+
+    public static void BroadCastUnitPosition(int unitID, int targetserver, int receiver_id, Vector3 pos)
     {
         using (Packet answer = new Packet((int) ClientPackets.playerMovement))
         {
@@ -116,7 +132,7 @@ public class ClientMessages : MonoBehaviour
         }
     }
 
-    public static void TransferLobbySettings(int server_id, int max_players, int max_villagers,int startResources)
+    public static void TransferLobbySettings(int server_id, int max_players, int max_villagers, int startResources)
     {
         using (Packet answer = new Packet((int) ClientPackets.settings))
         {
@@ -127,6 +143,7 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+
     public static void TransferTeamColor(int server_id, int player)
     {
         using (Packet answer = new Packet((int) ClientPackets.teamsettings))
@@ -136,15 +153,21 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
-    
-    public static void BuildingInit(int server_id, int receiver, int building_id, int multiplier, bool initialized, bool finished)
+
+    public static void BuildingInit(
+        int server_id,
+        int receiver,
+        int building_id,
+        int multiplier,
+        bool initialized,
+        bool finished)
     {
         using (Packet answer = new Packet((int) ClientPackets.building))
         {
             answer.Write(receiver);
             answer.Write(server_id);
             answer.Write(building_id);
-            answer.Write(multiplier);  
+            answer.Write(multiplier);
             answer.Write(initialized);
             answer.Write(finished);
             SendTcpData(answer);
@@ -161,6 +184,7 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+
     public static void DestroyResource(int server_id, string id)
     {
         using (Packet answer = new Packet((int) ClientPackets.destroyresource))
@@ -170,6 +194,7 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+
     public static void ProjectileSpawned(int server_id, int shooter, int target)
     {
         using (Packet answer = new Packet((int) ClientPackets.projectile))
@@ -180,7 +205,7 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
-    
+
 
     private static void SendTcpData(Packet packet)
     {

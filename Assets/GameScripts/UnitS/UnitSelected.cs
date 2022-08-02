@@ -1,21 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
+
 
 public class UnitSelected : MonoBehaviour
 {
     private RTSView _rtsView;
     public Unit unitData;
     public GameObject _selectedGameObject;
+    private NavMeshAgent _navMeshAgent;
+    private Transform oldTransform;
     private Vector3 movePos;
     private bool currentlyMoving = false;
     public bool isIdle = false;
-    private NavMeshAgent _navMeshAgent;
     public float currentIdleTime=0;
-    private Transform oldTransform;
     
     void Awake()
     {
@@ -51,10 +48,6 @@ public class UnitSelected : MonoBehaviour
         {
             _navMeshAgent.destination = movePos;
              _rtsView.EnableView();
-            // var direction = movePos - transform.position;
-            // Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
-            // transform.rotation = rotation;
-            // transform.position = Vector3.MoveTowards(transform.position, movePos,unitData.movementSpeed*Time.deltaTime);
         }
     }
 

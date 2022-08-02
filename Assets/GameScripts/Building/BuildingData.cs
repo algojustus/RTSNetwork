@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingData
 {
     public GameObject building;
-    public int id;
     public string prefabname;
     public Vector3 position;
     public Quaternion rotation;
+    public int id;
     public int building_dmg;
     public int building_hp;
     public int ranged_resistance;

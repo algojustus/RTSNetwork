@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,17 +8,17 @@ public class BuildingSelected : MonoBehaviour
     public GameObject _selectedGameObject;
     private Dictionary<int, GameObject> unitsEntered;
     private Dictionary<int, Vector3> unitsoldpos;
+    public GameObject finishedBuilding;
+    public ResourcesUI resourceUi;
+    public TextMesh progress;
+    public Vector3 buildinglocation;
     private float currentBuildtime = 0;
     private float currentIdleTime = 0;
     private int secondsDone = 1;
     public int buildinghp = 0;
+    public int building_id;
     public bool isGround;
     public bool buildStarted;
-    public Vector3 buildinglocation;
-    public GameObject finishedBuilding;
-    public ResourcesUI resourceUi;
-    public TextMesh progress;
-    public int building_id;
 
     void Awake()
     {

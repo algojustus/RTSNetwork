@@ -2,30 +2,32 @@ using UnityEngine;
 
 public class ResourceNode
 {
-   private int resourceCount;
-   public Transform node;
-   public ResourceNode(Transform resource, int resourceCount)
-   {
-      node = resource;
-      SetResourceCount(resourceCount);
-   }
+    private int resourceCount;
+    public Transform node;
 
-   public Vector3 GetPosition()
-   {
-      return node.position;
-   }
+    public ResourceNode(Transform resource, int resourceCount)
+    {
+        node = resource;
+        SetResourceCount(resourceCount);
+    }
 
-   public void SetResourceCount(int count)
-   {
-      resourceCount = count;
-   }
-   public void ReduceResourceCount()
-   {
-      resourceCount--;
-   }
+    public Vector3 GetPosition()
+    {
+        return node.position;
+    }
 
-   public bool HasResources()
-   {
-      return resourceCount > 0;
-   }
+    public void SetResourceCount(int count)
+    {
+        resourceCount = count;
+    }
+
+    public void ReduceResourceCount()
+    {
+        resourceCount--;
+    }
+
+    public bool HasResources()
+    {
+        return resourceCount > 0;
+    }
 }

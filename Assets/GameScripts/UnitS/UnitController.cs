@@ -5,28 +5,29 @@ using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour
 {
-    private Vector3 leftClickPosition;
-    private Vector3 rightClickPosition;
-    private List<UnitSelected> selectedUnits;
-    private List<BuildingSelected> buildingUnits;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private LayerMask resourceMask;
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private RectTransform selectionArea;
-    private Vector2 selectionStartPos;
-    private float y_axis_offset = 3;
-    private float x_axis_offset = 0;
-    private float z_axis_offset = 0;
-    private int unitCounter = 0;
+    [SerializeField] private Canvas unitCanvas;
+    private Vector3 leftClickPosition;
+    private Vector3 rightClickPosition;
     private Vector3 mousePos;
+    private Vector2 selectionStartPos;
+    private List<UnitSelected> selectedUnits;
+    private List<BuildingSelected> buildingUnits;
     private GameObject gameMananger;
     private GameObject clickedResource;
     private GameObject attackTarget;
     private ResourcesUI _resources;
-    private string currentUnitPrefabname;
     public Slider progressbar;
-    [SerializeField] private Canvas unitCanvas;
+    private string currentUnitPrefabname;
+    private float y_axis_offset = 3;
+    private float x_axis_offset = 0;
+    private float z_axis_offset = 0;
+    private int unitCounter = 0;
+
     void Awake()
     {
         gameMananger = GameObject.Find("GameManager");
@@ -35,7 +36,7 @@ public class UnitController : MonoBehaviour
         selectionArea.gameObject.SetActive(false);
         _resources = gameMananger.GetComponent<ResourcesUI>();
     }
-    
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -63,41 +64,47 @@ public class UnitController : MonoBehaviour
             InitMovement(rightClickPosition);
         }
     }
-    
+
     IEnumerator SummonCooldown(float cooldown)
     {
         progressbar.gameObject.SetActive(true);
         for (float alpha = 0; alpha <= cooldown; alpha += 0.1f)
         {
-            progressbar.value += 0.1f/cooldown;
+            progressbar.value += 0.1f / cooldown;
             yield return new WaitForSeconds(.1f);
         }
+
         progressbar.gameObject.SetActive(false);
         progressbar.value = 0;
     }
+
     public void InitVillager(BuildingSelected buildingSelected)
     {
         StartCoroutine(InstantiateVillager(buildingSelected));
     }
+
     public void InitSpear(BuildingSelected buildingSelected)
     {
         StartCoroutine(InstantiateSpear(buildingSelected));
     }
+
     public void InitSword(BuildingSelected buildingSelected)
     {
         StartCoroutine(InstantiateSword(buildingSelected));
     }
+
     public void InitBow(BuildingSelected buildingSelected)
     {
         StartCoroutine(InstantiateBow(buildingSelected));
     }
+
     public IEnumerator InstantiateVillager(BuildingSelected buildingSelected)
     {
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(5));
         yield return new WaitForSeconds(5);
-        bool allowedToCreate = _resources.HasEnoughResources(50,0,0,0);
+        bool allowedToCreate = _resources.HasEnoughResources(50, 0, 0, 0);
         if (allowedToCreate)
         {
             int unit_id;
@@ -121,29 +128,24 @@ public class UnitController : MonoBehaviour
                     data.unitData.damage,
                     data.unitData.ranged_resistance,
                     data.unitData.melee_resistance);
-            Debug.Log(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary.Count);
-            Debug.Log(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary);
-            foreach (var jeys in Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary)
-            {
-                Debug.Log(jeys.Key);
-                Debug.Log(jeys.Value);
-            }
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .UnitDictionary[unit_id].unit = currentUnit;
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .UnitCounter();
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+
         _resources.villager_count++;
         _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
+
     public IEnumerator InstantiateSpear(BuildingSelected buildingSelected)
     {
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(10));
         yield return new WaitForSeconds(10);
-        bool allowedToCreate = _resources.HasEnoughResources(30,25,0,0);
+        bool allowedToCreate = _resources.HasEnoughResources(30, 25, 0, 0);
         if (allowedToCreate)
         {
             int unit_id;
@@ -171,16 +173,18 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+
         _resources.villager_count++;
         _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
+
     public IEnumerator InstantiateSword(BuildingSelected buildingSelected)
     {
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(20));
         yield return new WaitForSeconds(20);
-        bool allowedToCreate = _resources.HasEnoughResources(60,0,35,0);
+        bool allowedToCreate = _resources.HasEnoughResources(60, 0, 35, 0);
         if (allowedToCreate)
         {
             int unit_id;
@@ -208,16 +212,18 @@ public class UnitController : MonoBehaviour
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
         }
+
         _resources.villager_count++;
         _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
+
     public IEnumerator InstantiateBow(BuildingSelected buildingSelected)
     {
         if (_resources.villager_max <= _resources.villager_count)
             yield break;
         StartCoroutine(SummonCooldown(10));
         yield return new WaitForSeconds(10);
-        bool allowedToCreate = _resources.HasEnoughResources(0,35,50,0);
+        bool allowedToCreate = _resources.HasEnoughResources(0, 35, 50, 0);
         if (allowedToCreate)
         {
             int unit_id;
@@ -247,32 +253,34 @@ public class UnitController : MonoBehaviour
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .UnitCounter();
         }
-        
+
         _resources.villager_count++;
         _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
-    
+
     private void InitMovement(Vector3 moveTo)
     {
         Vector3 shufflePosition = moveTo;
         foreach (var units in selectedUnits)
         {
-            if(units.CompareTag("player1_villager"))
+            if (units.CompareTag("player1_villager"))
             {
                 shufflePosition = ShufflePosition(moveTo);
                 units.MoveToPosition(shufflePosition);
                 if (clickedResource != null)
                 {
-                    units.GetComponent<GatheringUnit>().resourceNode = 
+                    units.GetComponent<GatheringUnit>().resourceNode =
                         clickedResource.GetComponent<ResourceClicked>().ResourceNode;
                     units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Idle;
                     clickedResource = null;
                     return;
                 }
+
                 units.GetComponent<GatheringUnit>().movement = GatheringUnit.State.Movement;
                 units.GetComponent<GatheringUnit>().state = GatheringUnit.State.Idle;
-            } 
-            if(units.CompareTag("Player1"))
+            }
+
+            if (units.CompareTag("Player1"))
             {
                 shufflePosition = ShufflePosition(moveTo);
                 units.MoveToPosition(shufflePosition);
@@ -283,10 +291,12 @@ public class UnitController : MonoBehaviour
                     attackTarget = null;
                     return;
                 }
+
                 units.GetComponent<AttackUnit>().movement = AttackUnit.Attack.Movement;
                 units.GetComponent<AttackUnit>().state = AttackUnit.Attack.Idle;
             }
         }
+
         ResetShufflePosition();
     }
 
@@ -343,14 +353,17 @@ public class UnitController : MonoBehaviour
         {
             mousePosition = raycastHit.point;
         }
+
         if (Physics.Raycast(ray, out RaycastHit raycastHit2, float.MaxValue, resourceMask))
         {
             clickedResource = raycastHit2.collider.gameObject;
         }
+
         if (Physics.Raycast(ray, out RaycastHit raycastHit3, float.MaxValue, enemyMask))
         {
             attackTarget = raycastHit3.collider.gameObject;
         }
+
         return mousePosition;
     }
 
@@ -368,7 +381,8 @@ public class UnitController : MonoBehaviour
 
         foreach (var collider in check)
         {
-            if(collider.transform.CompareTag("Player1") || collider.transform.CompareTag("player1_villager")){
+            if (collider.transform.CompareTag("Player1") || collider.transform.CompareTag("player1_villager"))
+            {
                 UnitSelected unitSelected = collider.collider.GetComponent<UnitSelected>();
                 if (unitSelected != null)
                 {
@@ -383,32 +397,40 @@ public class UnitController : MonoBehaviour
 
             if (collider.transform.CompareTag("Player1") && selectedUnits.Count == 1)
             {
-                unitCanvas.transform.Find("Slider/Attack/Damage").GetComponent<Text>().text = ""+selectedUnits[0].unitData.damage;
-                unitCanvas.transform.Find("Slider/UnitIcon/Hitpoints").GetComponent<Text>().text = 
+                unitCanvas.transform.Find("Slider/Attack/Damage").GetComponent<Text>().text =
+                    "" + selectedUnits[0].unitData.damage;
+                unitCanvas.transform.Find("Slider/UnitIcon/Hitpoints").GetComponent<Text>().text =
                     Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                        .UnitDictionary[selectedUnits[0].GetComponent<RTSView>().unit_id].current_hp +"|"+selectedUnits[0].unitData.unit_hp;
+                        .UnitDictionary[selectedUnits[0].GetComponent<RTSView>().unit_id].current_hp + "|" +
+                    selectedUnits[0].unitData.unit_hp;
                 unitCanvas.transform.Find("Slider/Armor/Shield").GetComponent<Text>().text =
-                    selectedUnits[0].unitData.melee_resistance + "|" +selectedUnits[0].unitData.ranged_resistance;
-                unitCanvas.transform.Find("Slider/UnitName").GetComponent<Text>().text = ""+selectedUnits[0].unitData.prefabname;
+                    selectedUnits[0].unitData.melee_resistance + "|" + selectedUnits[0].unitData.ranged_resistance;
+                unitCanvas.transform.Find("Slider/UnitName").GetComponent<Text>().text =
+                    "" + selectedUnits[0].unitData.prefabname;
                 unitCanvas.gameObject.SetActive(true);
             }
+
             if (collider.transform.CompareTag("player1_kaserne"))
             {
                 BuildingSelected building = collider.collider.GetComponent<BuildingSelected>();
                 buildingUnits.Add(building);
                 building.SetSelectedVisible(true);
-                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(collider.transform.GetComponent<BuildingSelected>().buildingData,building);
+                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(
+                    collider.transform.GetComponent<BuildingSelected>().buildingData,
+                    building);
                 gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(true);
             }
+
             if (collider.transform.CompareTag("player1_towncenter"))
             {
                 BuildingSelected building = collider.collider.GetComponent<BuildingSelected>();
                 buildingUnits.Add(building);
                 building.SetSelectedVisible(true);
-                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(collider.transform.GetComponent<BuildingSelected>().buildingData,building);
+                gameMananger.GetComponent<BuildingController>().SetUiOnBuilding(
+                    collider.transform.GetComponent<BuildingSelected>().buildingData,
+                    building);
                 gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(true);
             }
-            
         }
 
         if (selectedUnits.Count > 0 && buildingUnits.Count > 0)
@@ -417,8 +439,11 @@ public class UnitController : MonoBehaviour
             {
                 building.SetSelectedVisible(false);
             }
+
             gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
-            gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildingUnits[0].buildingData,buildingUnits[0]);
+            gameMananger.GetComponent<BuildingController>().ResetBuildingUI(
+                buildingUnits[0].buildingData,
+                buildingUnits[0]);
             buildingUnits.Clear();
         }
     }
@@ -431,26 +456,32 @@ public class UnitController : MonoBehaviour
             {
                 gameMananger.GetComponent<BuildingController>().villagerClicked.gameObject.SetActive(false);
             }
+
             if (units.transform.CompareTag("Player1"))
             {
                 unitCanvas.gameObject.SetActive(false);
             }
+
             units.SetSelectedVisible(false);
         }
+
         foreach (var buildings in buildingUnits)
         {
             if (buildings.transform.CompareTag("player1_kaserne"))
             {
                 gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
-                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData,buildings);
+                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData, buildings);
             }
+
             if (buildings.transform.CompareTag("player1_towncenter"))
             {
                 gameMananger.GetComponent<BuildingController>().buildings.gameObject.SetActive(false);
-                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData,buildings);
+                gameMananger.GetComponent<BuildingController>().ResetBuildingUI(buildings.buildingData, buildings);
             }
+
             buildings.SetSelectedVisible(false);
         }
+
         buildingUnits.Clear();
         selectedUnits.Clear();
     }

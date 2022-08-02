@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackUnit : MonoBehaviour
@@ -9,12 +8,12 @@ public class AttackUnit : MonoBehaviour
     private UnitSelected unitControlls;
     public Attack state;
     public Attack movement;
+    private Vector3 movepos;
     public GameObject target;
-    public float maxRange;
     public ResourcesUI resourceUi;
+    public float maxRange;
     public bool isAllowedtoAttack;
     public bool currentlyCharing;
-    private Vector3 movepos;
 
     public enum Attack
     {
@@ -59,13 +58,13 @@ public class AttackUnit : MonoBehaviour
                     }
 
                     var distance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
-                    
+
                     if (distance > maxRange)
                     {
                         MoveToEnemy(
                             target.transform,
                             () =>
-                            { 
+                            {
                                 state = Attack.MovingToEnemy;
                             });
                     } else
@@ -73,11 +72,11 @@ public class AttackUnit : MonoBehaviour
                         MoveToEnemy(
                             transform,
                             () =>
-                            { 
+                            {
                                 state = Attack.Fighting;
                             });
                     }
-                    
+
 
                     break;
                 case Attack.Fighting:
@@ -99,7 +98,7 @@ public class AttackUnit : MonoBehaviour
                         else
                             target = null;
                     }
-                    //if hp drops below zero destroy unit
+                    
                     break;
             }
         }
@@ -112,7 +111,7 @@ public class AttackUnit : MonoBehaviour
         }
     }
 
-    public void StartFightingEffect()
+    private void StartFightingEffect()
     {
         particles.Play();
     }
@@ -145,26 +144,22 @@ public class AttackUnit : MonoBehaviour
         yield return new WaitForSeconds(5);
         isAllowedtoAttack = true;
     }
+
     public void ShootProjectile()
     {
         if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
-                .PlayerDictionary[Client.otherID].UnitDictionary[target.GetComponent<RTSView>().unit_id].current_hp <= 0)
+                .PlayerDictionary[Client.otherID].UnitDictionary[target.GetComponent<RTSView>().unit_id].current_hp <=
+            0)
             return;
-            
-        ClientMessages.ProjectileSpawned(Client.myCurrentServer,transform.GetComponent<RTSView>().unit_id,target.GetComponent<RTSView>().unit_id);
-        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", transform.position+transform.forward, new Quaternion());
-        arrow.GetComponent<Arrow>().ShootArrowOn(target,unitControlls.unitData.damage);
+
+        ClientMessages.ProjectileSpawned(
+            Client.myCurrentServer,
+            transform.GetComponent<RTSView>().unit_id,
+            target.GetComponent<RTSView>().unit_id);
+        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", transform.position + transform.forward, new Quaternion());
+        arrow.GetComponent<Arrow>().ShootArrowOn(target, unitControlls.unitData.damage);
         arrow.GetComponent<Arrow>().fromEnemy = false;
         currentlyCharing = false;
         isAllowedtoAttack = false;
-    }
-    public void ShootProjectileServer(GameObject _target)
-    {
-        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
-                .PlayerDictionary[Client.clientID].UnitDictionary[target.GetComponent<RTSView>().unit_id].current_hp <= 0)
-            return;
-        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", transform.position+transform.forward, new Quaternion());
-        arrow.GetComponent<Arrow>().fromEnemy = true;
-        arrow.GetComponent<Arrow>().ShootArrowOn(target,unitControlls.unitData.damage);
     }
 }
