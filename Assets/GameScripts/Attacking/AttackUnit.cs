@@ -10,7 +10,7 @@ public class AttackUnit : MonoBehaviour
     public Attack state;
     public Attack movement;
     public GameObject target;
-    public float maxRange = 25f;
+    public float maxRange;
     public ResourcesUI resourceUi;
     public bool isAllowedtoAttack;
     public bool currentlyCharing;
@@ -29,7 +29,6 @@ public class AttackUnit : MonoBehaviour
         unitControlls = gameObject.GetComponent<UnitSelected>();
         state = Attack.Idle;
         resourceUi = GameObject.Find("GameManager").GetComponent<ResourcesUI>();
-        maxRange = 25f;
     }
 
     private void Update()
@@ -95,7 +94,10 @@ public class AttackUnit : MonoBehaviour
                         state = Attack.MovingToEnemy;
                     } else
                     {
-                        AttackTarget();
+                        if (target != null)
+                            AttackTarget();
+                        else
+                            target = null;
                     }
                     //if hp drops below zero destroy unit
                     break;
@@ -110,7 +112,7 @@ public class AttackUnit : MonoBehaviour
         }
     }
 
-    private void StartFightingEffect()
+    public void StartFightingEffect()
     {
         particles.Play();
     }
@@ -140,14 +142,29 @@ public class AttackUnit : MonoBehaviour
     private IEnumerator AttackCooldown()
     {
         currentlyCharing = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         isAllowedtoAttack = true;
     }
-    private void ShootProjectile()
+    public void ShootProjectile()
     {
-        GameObject arrow = Instantiate(Resources.Load("Arrow"), transform.position+transform.forward, new Quaternion()) as GameObject;
-        arrow.GetComponent<Arrow>().ShootArrowOn(target);
+        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+                .PlayerDictionary[Client.otherID].UnitDictionary[target.GetComponent<RTSView>().unit_id].current_hp <= 0)
+            return;
+            
+        ClientMessages.ProjectileSpawned(Client.myCurrentServer,transform.GetComponent<RTSView>().unit_id,target.GetComponent<RTSView>().unit_id);
+        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", transform.position+transform.forward, new Quaternion());
+        arrow.GetComponent<Arrow>().ShootArrowOn(target,unitControlls.unitData.damage);
+        arrow.GetComponent<Arrow>().fromEnemy = false;
         currentlyCharing = false;
         isAllowedtoAttack = false;
+    }
+    public void ShootProjectileServer(GameObject _target)
+    {
+        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+                .PlayerDictionary[Client.clientID].UnitDictionary[target.GetComponent<RTSView>().unit_id].current_hp <= 0)
+            return;
+        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", transform.position+transform.forward, new Quaternion());
+        arrow.GetComponent<Arrow>().fromEnemy = true;
+        arrow.GetComponent<Arrow>().ShootArrowOn(target,unitControlls.unitData.damage);
     }
 }

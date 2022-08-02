@@ -112,8 +112,6 @@ public class UnitController : MonoBehaviour
             unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .unitcounter;
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                .UnitCounter();
-            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .AddUnit(
                     unit_id,
                     currentUnitPrefabname,
@@ -123,6 +121,17 @@ public class UnitController : MonoBehaviour
                     data.unitData.damage,
                     data.unitData.ranged_resistance,
                     data.unitData.melee_resistance);
+            Debug.Log(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary.Count);
+            Debug.Log(Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary);
+            foreach (var jeys in Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID].UnitDictionary)
+            {
+                Debug.Log(jeys.Key);
+                Debug.Log(jeys.Value);
+            }
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitDictionary[unit_id].unit = currentUnit;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
             _resources.BuildWithResources(currentUnitPrefabname);
         }
         _resources.villager_count++;
@@ -223,8 +232,6 @@ public class UnitController : MonoBehaviour
             unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .unitcounter;
             Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
-                .UnitCounter();
-            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
                 .AddUnit(
                     unit_id,
                     currentUnitPrefabname,
@@ -235,7 +242,12 @@ public class UnitController : MonoBehaviour
                     data.unitData.ranged_resistance,
                     data.unitData.melee_resistance);
             _resources.BuildWithResources(currentUnitPrefabname);
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitDictionary[unit_id].unit = currentUnit;
+            Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+                .UnitCounter();
         }
+        
         _resources.villager_count++;
         _resources.villager_ui.text = _resources.villager_count + "|" + _resources.villager_max;
     }
@@ -411,7 +423,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    private void DeactivateAllUnitsBeforeNewSelect()
+    public void DeactivateAllUnitsBeforeNewSelect()
     {
         foreach (var units in selectedUnits)
         {

@@ -170,6 +170,17 @@ public class ClientMessages : MonoBehaviour
             SendTcpData(answer);
         }
     }
+    public static void ProjectileSpawned(int server_id, int shooter, int target)
+    {
+        using (Packet answer = new Packet((int) ClientPackets.projectile))
+        {
+            answer.Write(server_id);
+            answer.Write(shooter);
+            answer.Write(target);
+            SendTcpData(answer);
+        }
+    }
+    
 
     private static void SendTcpData(Packet packet)
     {

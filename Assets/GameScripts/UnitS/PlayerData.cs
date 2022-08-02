@@ -10,8 +10,8 @@ public class PlayerData
     public int id;
     public string username;
 
-    public int unitcounter = 1;
-    public int buildingcounter = 1;
+    public int unitcounter = 0;
+    public int buildingcounter = 0;
 
     public void UnitCounter()
     {
@@ -39,7 +39,6 @@ public class PlayerData
     public void DestroyBuilding(int building_id)
     {
         BuildingDictionary.Remove(building_id);
-        //Send broadcast to both players
     }
 
     public void AddUnit(int unit_id, string prefab_name, Vector3 spawnpos, Quaternion spawnrota, int hitpoints,

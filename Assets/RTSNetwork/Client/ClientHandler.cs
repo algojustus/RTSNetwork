@@ -84,8 +84,9 @@ public class ClientHandler
 
     public static void UnitCreated(Packet packet)
     {
-        //Scriptableobject auslesen -> siehe bei buildings
         int unit_id = packet.ReadInt();
+        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID]
+            .unitcounter;
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();
         Quaternion rot = packet.ReadQuaternion();
@@ -93,13 +94,14 @@ public class ClientHandler
         unit.SpawnIngameUnit();
         unit.unit.transform.tag = "Player2";
         unit.unit.layer = 8; // 8 = enemy
+        unit.unit.GetComponent<RTSView>().unit_id = unit_id;
         Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].UnitDictionary
             .Add(unit_id, unit);
+        Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.otherID].UnitCounter();
     }
 
     public static void BuildingCreated(Packet packet)
     {
-        Debug.Log("Buildingcreated");
         int unit_id = packet.ReadInt();
         string prefab_name = packet.ReadString();
         Vector3 pos = packet.ReadVector3();
@@ -212,5 +214,25 @@ public class ClientHandler
     {
         string resource_id = packet.ReadString();
         GatheringHandler.RemoveResource(resource_id);
+    }
+
+    public static void SpawnProjectile(Packet packet)
+    {
+        Debug.Log("called");
+        int shooterid = packet.ReadInt();
+        int targetid = packet.ReadInt();
+
+        GameObject attacker = Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+            .PlayerDictionary[Client.otherID].UnitDictionary[shooterid].unit;
+        GameObject target = Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+            .PlayerDictionary[Client.clientID].UnitDictionary[targetid].unit;
+
+        if (Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+                .PlayerDictionary[Client.clientID].UnitDictionary[targetid].current_hp <= 0)
+            return;
+        GameObject arrow = ObjectSpawner.SpawnObject("Arrow", attacker.transform.position+attacker.transform.forward, new Quaternion());
+        arrow.GetComponent<Arrow>().fromEnemy = true;
+        arrow.GetComponent<Arrow>().ShootArrowOn(target,Client.serverlist.ServerlistDictionary[Client.myCurrentServer]
+            .PlayerDictionary[Client.otherID].UnitDictionary[shooterid].damage);
     }
 }

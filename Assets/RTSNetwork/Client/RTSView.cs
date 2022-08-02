@@ -26,7 +26,8 @@ public class RTSView : MonoBehaviour
         position = syncedObject.transform.position;
         rotation = syncedObject.transform.rotation;
         scale = syncedObject.transform.localScale;
-        unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
+        if(!transform.CompareTag("Player2"))
+            unit_id = Client.serverlist.ServerlistDictionary[Client.myCurrentServer].PlayerDictionary[Client.clientID]
             .unitcounter;
         //Später vlt aus der Unit rausladen, den Prefab namen
     }

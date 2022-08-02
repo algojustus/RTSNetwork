@@ -221,6 +221,7 @@ public class Client : MonoBehaviour
             {(int) ServerPackets.building, ClientHandler.BuildBuilding},
             {(int) ServerPackets.readycheck, ClientHandler.ReadyCheck},
             {(int) ServerPackets.destroyresource, ClientHandler.DestroyResource},
+            {(int) ServerPackets.projectile, ClientHandler.SpawnProjectile},
         };
     }
 
