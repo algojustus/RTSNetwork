@@ -141,7 +141,7 @@ public class AttackUnit : MonoBehaviour
     private IEnumerator AttackCooldown()
     {
         currentlyCharing = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         isAllowedtoAttack = true;
     }
 
