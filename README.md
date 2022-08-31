@@ -1,7 +1,7 @@
 # RTSNetwork
 Version 1.0 Abgabe 30.08.2022
 
-Video mit Features:
+Video mit Features: https://youtu.be/UZB77kVTIdU
 
 Verwendete Assets: SchwertIcon - https://fontawesome.com/icons/sword?s=solid<br>
 SchildIcon - https://fontawesome.com/icons/shield?s=solid<br>
